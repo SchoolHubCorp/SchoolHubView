@@ -1,0 +1,45 @@
+@import '../../../scss/mixins';
+
+.container {
+    @include block-page($background-color: #E8EFF7);
+
+    .header {
+        height: 100px;
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        padding-left: 300px;
+
+        .returen-button {
+            @include text-field();
+    
+            .mat-icon {
+                margin-right: 4px;
+                height: 1.25rem;
+                font-size: 1.25rem;
+            }
+        }
+    }
+
+    .content {
+        padding-top: 150px;
+        padding-bottom: 100px;
+        display: flex;
+        justify-content: center;
+
+        .form-box {
+            width: 400px;
+            padding: auto;
+            display: table-column;
+
+            .role-selector {
+                display: flex;
+                justify-content: center;
+            }
+        }
+    }
+} 
+
+:host ::ng-deep .mat-mdc-tab-header {
+    margin: 10px auto;
+}

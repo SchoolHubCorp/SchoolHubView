@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="header">
+        <button mat-button color="primary" class="returen-button" [routerLink]="['/start']">
+            <mat-icon >keyboard_arrow_left</mat-icon>
+            Back To Home
+        </button>
+    </div>
+    <div class="content">
+        <div class="form-box">
+            <div class="role-selector">
+                <mat-form-field appearance="fill">
+                    <mat-label>Roles</mat-label>
+                    <mat-select [(ngModel)]="selectedValue" (ngModelChange)="onSelectedValueChange($event)">
+                        <mat-option *ngFor="let role of roles" [value]="role.value">
+                          {{role.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

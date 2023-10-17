@@ -1,0 +1,32 @@
+.form-container {
+    overflow: hidden !important;
+
+    .mat-mdc-form-field {
+        width: 100%;
+        padding: 3px 10px;
+   }
+
+   .submit-button {
+        display: flex;
+        justify-content: center;
+
+        .mat-mdc-raised-button {
+            width: calc(100% - 20px);
+            height: 56px;
+        }
+   }
+
+   .added-template {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+   }
+
+   .error-message {
+     z-index: 1;
+     margin-top: 10px;
+     display: flex;
+     justify-content: center;
+     color: red;
+}
+}

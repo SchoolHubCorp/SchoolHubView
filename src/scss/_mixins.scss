@@ -1,0 +1,18 @@
+@mixin block-page($background-color: white) {
+    min-height: 100%;
+    min-width: 100%;
+    background-color: $background-color;
+    padding: 0;
+}
+
+@mixin text-field(
+    $line-height: 20px, $weight: 400,
+    $font: 'Montserrat', $color: #186AA5,
+    $size: 18px
+) {
+    line-height: $line-height;
+    font-weight: $weight;
+    font-family: $font;
+    color: $color;
+    font-size: $size;
+}

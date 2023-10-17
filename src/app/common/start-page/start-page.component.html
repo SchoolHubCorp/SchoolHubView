@@ -1,0 +1,14 @@
+<div class="container">
+    <div class="content">
+        <p class="text-start fs-1 fw-bold">{{schoolData.name}}</p>
+        <p class="text-start fs-3">{{schoolData.slogan}}</p>
+        <p class="text-start fs-5">{{schoolData.information}}</p>
+        <div class="buttons">
+            <button mat-raised-button color="primary" (click)="on()">SIGN IN</button>
+            <button mat-stroked-button color="primary" [routerLink]="['/login/']">SIGN UP</button>
+        </div>
+    </div>
+    <div class="school-image">
+        <img class="shadow" src={{schoolData.image}}>
+    </div>
+</div>

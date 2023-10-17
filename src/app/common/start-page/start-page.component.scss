@@ -1,0 +1,41 @@
+@import '../../../scss/mixins';
+
+.container {
+    @include block-page($background-color: #E8EFF7);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    padding: 15%;
+
+    .content {
+        width: 55%;
+        padding-right: 100px;
+        color: #186AA5;
+
+        .buttons {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+
+            .mdc-button {
+                width: 150px;
+                border-width: 2px;
+                border-color: #186AA5;
+            }
+        }
+    }
+    
+    .school-image {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+
+        img {
+            max-width: calc(100% - 100px);
+            max-height: 620px;
+            border-radius: 25px;
+        }
+    }
+}
