@@ -1,3 +1,13 @@
+<div class="role-selector" *ngIf="tabId === 1">
+    <mat-form-field appearance="fill">
+        <mat-label>Roles</mat-label>
+        <mat-select [(ngModel)]="selectedValue" (ngModelChange)="onSelectedValueChange($event)">
+            <mat-option *ngFor="let role of roles" [value]="role">
+              {{role}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
 <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" (selectedTabChange)="tabChanged($event)">
     <mat-tab label="Sign in">
         <div class="form-container">

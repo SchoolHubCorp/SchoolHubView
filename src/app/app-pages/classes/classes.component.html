@@ -1,0 +1,33 @@
+<div class="page-container">
+    <div class="class-table">
+        <mat-grid-list cols="4" rowHeight="1:1">
+            <mat-grid-tile 
+                *ngFor="let subject of subjectsList$ | async">
+                    <div class="class-card">
+                        <span class="class-card__name">{{subject.className}}</span>
+                        <br>
+                        <div>
+                            Class code:
+                            <span>{{subject.id}}</span>
+                        </div>
+                        <br>
+                        <button mat-raised-button color="primary" (click)="addClass()">Edit</button>
+                        <button mat-raised-button color="primary" (click)="addClass()">Delete</button>
+                    </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    <form class="add-class">
+        <mat-form-field>
+          <mat-label>New class</mat-label>
+          <input [formControl]="addingClassFormController" matInput>
+          <mat-error *ngIf="addingClassFormController.hasError('maxlength')">
+            5 symbols max allowed
+          </mat-error>
+          <mat-error *ngIf="addingClassFormController.hasError('minlength')">
+            One symbol should be at list
+          </mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="addClass()" [disabled]="!addingClassFormController.valid">Add class</button>
+    </form>      
+</div>

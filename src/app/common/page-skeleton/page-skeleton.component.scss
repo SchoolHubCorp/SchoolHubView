@@ -1,18 +1,100 @@
-.success {
-    margin-top: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-flow: column;
+@import "../../../scss/variables";
 
-    img {
-        width: 100px;
-        height: 100px;
+.container {
+    max-height: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    flex-direction: column;
+    align-items: center;
+    background-color: $main-background-color;
+
+    .header {
+        height: 160px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        
+        .mat-mdc-icon-button {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            color: $main-color;
+        }
+    
+        .buttons-container {
+            height: 110px;
+            width: fit-content;
+            display: flex;
+            align-items: center;
+
+            .select-button-container {
+                border-bottom-color: $main-color !important;
+                margin: 20px;
+                border-bottom: none;
+                border-bottom-color: $main-color;
+
+                &:hover {
+                    border-bottom: solid;
+
+                    .select-page-button {
+                        .icon-circle {
+                            border-width: 4px;
+                            width: 85px;
+                            height: 85px;
+        
+                            .mat-icon {
+                                height: 60px;
+                                width: 60px;
+                                font-size: 60px;
+                            }
+                        }
+    
+                        .text {
+                            font-size: 18px;
+                        }
+                    }
+                }
+
+                .select-page-button {
+                    background: inherit;
+                    border: none;
+                    justify-content: center;
+                    margin: 0 20px;
+                    
+                    .icon-circle {
+                        margin-bottom: 5px;
+                        border-radius: 50%;
+                        border-width: 3px;
+                        border-color: $main-color;
+                        border-style: inset;
+                        width: 70px;
+                        height: 70px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: width 0.3s ease, height 0.3s ease;
+    
+                        .mat-icon {
+                            height: 40px;
+                            width: 40px;
+                            font-size: 40px;
+                            color: $main-color;
+                        }
+                    }
+    
+                    .text {
+                        color: $main-color;
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
     }
 
-    p {
-        margin-top: 10px;
-        font-size: 30px;
-        color: green;
+    .content {
+        height: calc(100vh - 180px);
+        width: 100%;
     }
 }

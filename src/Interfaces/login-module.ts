@@ -18,7 +18,6 @@ export interface FromWithConnectingElement {
 }
 
 export interface RegisterPostData {
-    username: string,
     firstName: string,
     lastName: string,
     email: string,
@@ -30,6 +29,11 @@ export interface RegisterPostData {
 }
 
 export interface LoginPostData {
-    username: string,
+    email: string,
     password: string,
+}
+
+export interface EntranceResponse {
+    email: string,
+    token: string
 }

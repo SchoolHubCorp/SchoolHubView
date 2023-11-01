@@ -5,7 +5,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CardComponent } from './card/card.component';
 import { CommonModule } from '@angular/common';
 import { PageSkeletonComponent } from './common/page-skeleton/page-skeleton.component';
 import { StartPageComponent } from './common/start-page/start-page.component';
@@ -21,6 +20,16 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { SignInUpComponent } from './common/entrance-pages/sign-in-up/sign-in-up.component';
 import { ForgotPasswordComponent } from './common/entrance-pages/forgot-password/forgot-password.component';
+import { PlanComponent } from './app-pages/plan/plan.component';
+import { SubjectsComponent } from './app-pages/subjects/subjects.component';
+import { MarksComponent } from './app-pages/marks/marks.component';
+import { ClassesComponent } from './app-pages/classes/classes.component';
+import { StudentsComponent } from './app-pages/students/students.component';
+import { TeachersComponent } from './app-pages/teachers/teachers.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { SearchingFieldComponent } from './common/searching-field/searching-field.component';
+import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 const appRoutes: Routes = [
   { path: '', 
@@ -35,18 +44,45 @@ const appRoutes: Routes = [
       {path:'renew-password', component: ForgotPasswordComponent},
     ] 
   },
-  { path: 'pulpit', component: PageSkeletonComponent }
+  { path: 'schoolhub', component: PageSkeletonComponent,
+    children: [
+      {path:'plan', component: PlanComponent},
+      {path:'subjects', component: SubjectsComponent},
+      {path:'marks', component: MarksComponent},
+      {path:'classes', component: ClassesComponent},
+      {path:'students', component: StudentsComponent},
+      {path:'teachers', component: TeachersComponent},
+    ] 
+  }
 ];
+
+const AngularMaterialsImports = [
+  MatSelectModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatTabsModule,
+  MatCheckboxModule,
+  MatAutocompleteModule,
+  MatGridListModule,
+  MatButtonModule,
+  MatIconModule,
+]
 
 @NgModule({
   declarations: [
     AppComponent,
-    CardComponent,
     PageSkeletonComponent,
     StartPageComponent,
     EntrancePagesComponent,
     SignInUpComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    PlanComponent,
+    SubjectsComponent,
+    MarksComponent,
+    ClassesComponent,
+    StudentsComponent,
+    TeachersComponent,
+    SearchingFieldComponent
   ],
   imports: [
     BrowserModule, 
@@ -54,19 +90,19 @@ const appRoutes: Routes = [
     BrowserAnimationsModule, 
     NgbModule, 
     CommonModule,
-    MatButtonModule,
-    MatIconModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTabsModule,
-    MatCheckboxModule,
+    HttpClientModule,
+    ...AngularMaterialsImports,
+    JwtModule.forRoot({config: {
+      tokenGetter: () => {return localStorage.getItem('access_token')},
+      allowedDomains: ['localhost:4200'],
+      disallowedRoutes: ['localhost:4200/api/Users/login']
+    }}),
     RouterModule.forRoot(appRoutes),
   ],
-  providers: [],
+  providers: [JwtHelperService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

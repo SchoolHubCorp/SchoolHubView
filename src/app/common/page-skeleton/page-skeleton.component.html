@@ -1,5 +1,23 @@
-<div class="success">
-    <img src="https://cdn-icons-png.flaticon.com/512/148/148767.png">
-    <p>Login successful</p>
+<div class="container">
+    <div class="header">
+        <div class="buttons-container">
+            <div class="select-button-container" *ngFor="let page of pages">
+                <button class="select-page-button" [routerLink]="[page.route]">
+                    <div class="icon-circle">
+                        <mat-icon fontIcon={{page.icon}}></mat-icon>
+                    </div>
+                    <span class="text">{{page.label}}</span>
+                </button>
+            </div>
+        </div>
+        <button mat-icon-button (click)="logoutUser()">
+            <mat-icon>logout</mat-icon>
+        </button>
+    </div>
+    <hr style="width: 50%;">
+    
+    <div class="content">
+        <router-outlet></router-outlet>
+    </div>
 </div>
 
