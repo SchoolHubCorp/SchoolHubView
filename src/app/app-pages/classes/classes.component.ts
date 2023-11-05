@@ -1,38 +1,45 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { ClassResponse } from 'src/Interfaces/plan-module';
-import { PlanRequestService } from 'src/services/server-requests/plan-request.service';
+import { Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
+import { ClassResponse } from 'src/Interfaces/plan-models';
+import { ClassRequestService } from 'src/services/server-requests/class-request.service';
 
 @Component({
   selector: 'app-classes',
   templateUrl: './classes.component.html',
   styleUrls: ['./classes.component.scss']
 })
-export class ClassesComponent implements OnInit {
-  classs: string = '13po';
-  subjectsList$!: Observable<ClassResponse[]>;
+export class ClassesComponent implements OnInit, OnDestroy {
+  classesList$!: Observable<ClassResponse[]>;
+  private subscription: Subscription = new Subscription;
   addingClassFormController = new FormControl('', [
     Validators.minLength(2),
     Validators.maxLength(5)
   ]);
 
   constructor(
-    private planRequestService: PlanRequestService
+    private classRequestService: ClassRequestService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
     this.refreshSubjectsList();
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   refreshSubjectsList(): void {
-    this.subjectsList$ = this.planRequestService.getAllClasses();
+    this.classesList$ = this.classRequestService.getAllClasses();
   }
 
   addClass(): void {
     if (this.addingClassFormController.valid && this.addingClassFormController.value) {
-      this.planRequestService.postClass(this.addingClassFormController.value)
+      this.subscription.add(
+        this.classRequestService.postClass(this.addingClassFormController.value)
         .subscribe(response => {
             this.refreshSubjectsList();
             this.addingClassFormController.reset();
@@ -41,7 +48,28 @@ export class ClassesComponent implements OnInit {
           (error: HttpErrorResponse) => {
             console.log(error);
           }
-        );
+        )
+      );
     }
+  }
+  
+  onEdit(editingClass: ClassResponse): void {
+    this.router.navigate(['/schoolhub/class', editingClass.className], {
+        state: { chosenClass: editingClass }
+    });
+  } 
+
+  deleteClass(classroomId: number): void {
+    this.subscription.add(
+      this.classRequestService.deleteClass(classroomId)
+      .subscribe(response => {
+          this.refreshSubjectsList();
+          console.log(response);
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+        }
+      )
+    );
   }
 }

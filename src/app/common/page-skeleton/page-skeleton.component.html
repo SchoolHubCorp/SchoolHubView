@@ -1,7 +1,7 @@
 <div class="container">
     <div class="header">
-        <div class="buttons-container">
-            <div class="select-button-container" *ngFor="let page of pages">
+        <div class="buttons-container" *ngIf="userRole === 'Admin'; else otherRoles">
+            <div class="select-button-container" *ngFor="let page of pages.slice(1)">
                 <button class="select-page-button" [routerLink]="[page.route]">
                     <div class="icon-circle">
                         <mat-icon fontIcon={{page.icon}}></mat-icon>
@@ -10,6 +10,18 @@
                 </button>
             </div>
         </div>
+        <ng-template #otherRoles>
+            <div class="buttons-container">
+                <div class="select-button-container" *ngFor="let page of pages.slice(0, 3)">
+                    <button class="select-page-button" [routerLink]="[page.route]">
+                        <div class="icon-circle">
+                            <mat-icon fontIcon={{page.icon}}></mat-icon>
+                        </div>
+                        <span class="text">{{page.label}}</span>
+                    </button>
+                </div>
+            </div>
+        </ng-template>
         <button mat-icon-button (click)="logoutUser()">
             <mat-icon>logout</mat-icon>
         </button>

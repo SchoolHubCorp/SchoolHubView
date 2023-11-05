@@ -1,0 +1,77 @@
+<div class="page-container">
+    <div class="pupil-table">
+        <mat-grid-list cols="4" rowHeight="1:1">
+            <mat-grid-tile 
+                *ngFor="let pupil of pupilsList">
+                    <div class="pupil-card">
+                        <div class="pupil-card__name">
+                            <span>{{pupil.firstName}} </span>
+                            <span>{{pupil.lastName}}</span>
+                        </div>
+                        <button mat-raised-button color="primary" (click)="showPupil()">View</button>
+                    </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+    <div class="right-side">
+        <div class="classname borders">
+            <span class="classname__name">Classname:</span>
+            <form class="edit-classname">
+                <mat-form-field>
+                  <input [formControl]="editClassFormController" matInput>
+                  <mat-error *ngIf="editClassFormController.hasError('maxlength')">
+                    5 symbols max allowed
+                  </mat-error>
+                  <mat-error *ngIf="editClassFormController.hasError('minlength')">
+                    One symbol should be at list
+                  </mat-error>
+                </mat-form-field>
+            </form>  
+            <button class="save-btn" mat-mini-fab [disabled]="!editClassFormController.valid" color="primary" (click)="editClassname()">
+                <mat-icon>save</mat-icon>
+            </button>
+            <span class="classname__code">Access code: {{classData.classAccessCode}}</span>
+        </div>
+        <div class="plan-edit borders">
+            <span class="plan-edit__text">Please, choose plan image:</span>
+            <input type="file" (change)="onFileSelected($event)">
+            <button mat-raised-button color="primary" (click)="onUpload()">Upload</button>
+        </div>
+        <div class="class-subjects">
+            <div class="class-subjects__table">
+                <table mat-table [dataSource]="subjectsList" class="mat-elevation-z8">
+                    <ng-container matColumnDef="position">
+                      <th mat-header-cell *matHeaderCellDef> No. </th>
+                      <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef> Subject </th>
+                      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="code">
+                        <th mat-header-cell *matHeaderCellDef> Code </th>
+                        <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="edit">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <button mat-mini-fab color="primary">
+                                <mat-icon>edit</mat-icon>
+                            </button> 
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="delete">
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let element"> 
+                            <button mat-mini-fab color="primary">
+                                <mat-icon>delete</mat-icon>
+                            </button> 
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+            </div>
+        </div>
+    </div>
+</div>

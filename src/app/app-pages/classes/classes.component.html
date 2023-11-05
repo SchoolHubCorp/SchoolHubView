@@ -2,17 +2,17 @@
     <div class="class-table">
         <mat-grid-list cols="4" rowHeight="1:1">
             <mat-grid-tile 
-                *ngFor="let subject of subjectsList$ | async">
+                *ngFor="let class of classesList$ | async">
                     <div class="class-card">
-                        <span class="class-card__name">{{subject.className}}</span>
+                        <span class="class-card__name">{{class.className}}</span>
                         <br>
                         <div>
                             Class code:
-                            <span>{{subject.id}}</span>
+                            <span>{{class.classAccessCode}}</span>
                         </div>
                         <br>
-                        <button mat-raised-button color="primary" (click)="addClass()">Edit</button>
-                        <button mat-raised-button color="primary" (click)="addClass()">Delete</button>
+                        <button mat-raised-button color="primary" (click)="onEdit(class)">Edit</button>
+                        <button mat-raised-button color="primary" (click)="deleteClass(class.id)">Delete</button>
                     </div>
             </mat-grid-tile>
         </mat-grid-list>

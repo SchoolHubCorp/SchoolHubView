@@ -35,5 +35,6 @@ export interface LoginPostData {
 
 export interface EntranceResponse {
     email: string,
-    token: string
+    token: string,
+    role: string
 }

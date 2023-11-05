@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { EntranceResponse, LoginPostData, RegisterPostData } from 'src/Interfaces/login-module';
+import { EntranceResponse, LoginPostData, RegisterPostData } from 'src/Interfaces/login-models';
 import { SignInUpService } from './sign-in-up.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sign-in-up',
   templateUrl: './sign-in-up.component.html',
   styleUrls: ['./sign-in-up.component.scss']
 })
-export class SignInUpComponent implements OnInit {
+export class SignInUpComponent implements OnInit, OnDestroy {
+  private subscription: Subscription = new Subscription;
   tabId!: number;
   loginForm: FormGroup = new FormGroup({});
   registerForm: FormGroup = new FormGroup({});
@@ -48,6 +50,10 @@ export class SignInUpComponent implements OnInit {
       email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
       password: ['', [Validators.required]]
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onSelectedValueChange(value: any) {
@@ -90,17 +96,20 @@ export class SignInUpComponent implements OnInit {
       password: post.password,
     }
 
-    this.signInUpService.loginUser(this.loginPostData).subscribe(
-      (response: EntranceResponse) => {
-        localStorage.setItem('access_token', response.token);
-        localStorage.setItem('user_role', 'admin');
-        this.router.navigate(['/schoolhub']);
-      },
-      (error: HttpErrorResponse ) => {
-        console.log(error);
-        this.errorMessage = error.error;
-      }
-    ); 
+    this.subscription.add(
+      this.signInUpService.loginUser(this.loginPostData).subscribe(
+        (response: EntranceResponse) => {
+          console.log(response);
+          localStorage.setItem('access_token', response.token);
+          localStorage.setItem('user_role', response.role);
+          this.router.navigate(['/schoolhub']);
+        },
+        (error: HttpErrorResponse ) => {
+          console.log(error);
+          this.errorMessage = error.error;
+        }
+      )
+    );
   }
 
   onRegisterSubmit(post: any): void {
@@ -126,27 +135,31 @@ export class SignInUpComponent implements OnInit {
     }
 
     if (this.selectedValue === 'PARENT') {
-      this.signInUpService.registerParent(this.registerParentPostData)
+      this.subscription.add(
+        this.signInUpService.registerParent(this.registerParentPostData)
+          .subscribe(
+            response => {
+              this.reloadPage();
+            },
+            (error: HttpErrorResponse) => {
+              console.log(error);
+              this.errorMessage = error.error;
+            }
+          )
+      );
+    }
+    if (this.selectedValue === 'PUPIL') {
+      this.subscription.add(
+        this.signInUpService.registerUser(this.registerUserPostData)
         .subscribe(
           response => {
             this.reloadPage();
           },
-          (error: HttpErrorResponse) => {
+          (error: HttpErrorResponse ) => {
             console.log(error);
             this.errorMessage = error.error;
-          }
-        );
-    }
-    if (this.selectedValue === 'PUPIL') {
-      this.signInUpService.registerUser(this.registerUserPostData)
-      .subscribe(
-        response => {
-          this.reloadPage();
-        },
-        (error: HttpErrorResponse ) => {
-          console.log(error);
-          this.errorMessage = error.error;
-        });
+          })
+      );
     }
     else {
       this.errorMessage = 'Please, choose role!';

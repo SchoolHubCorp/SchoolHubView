@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, from } from 'rxjs';
-import { EntranceResponse, LoginPostData, RegisterPostData } from 'src/Interfaces/login-module';
+import { Observable, Subject } from 'rxjs';
+import { EntranceResponse, LoginPostData, RegisterPostData } from 'src/Interfaces/login-models';
 import { SERVICE_URL } from 'src/constants/service';
 
 @Injectable({

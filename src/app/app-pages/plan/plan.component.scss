@@ -1,0 +1,19 @@
+@import "../../../scss/variables";
+
+.image-container {
+    border: solid;
+    border-radius: 10px;
+    border-width: 3px;
+    border-color: $main-color;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 90%;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}

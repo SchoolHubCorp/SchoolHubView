@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StartPageService } from './start-page.service';
-import { SchoolDescription } from 'src/Interfaces/login-module';
+import { SchoolDescription } from 'src/Interfaces/login-models';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class StartPageComponent implements OnInit, OnDestroy {
   schoolData!: SchoolDescription;
-  subscription = new Subscription;
+  private subscription: Subscription = new Subscription;
 
   constructor(
     private startPageService: StartPageService,

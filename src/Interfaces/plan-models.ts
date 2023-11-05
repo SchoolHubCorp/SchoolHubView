@@ -6,4 +6,5 @@ export interface ClassInterface {
 export interface ClassResponse {
     id: number;
     className: string;
+    classAccessCode: string;
 }

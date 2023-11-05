@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import * as schoolData from '../../../stub/school-description.json';
 import { Observable, of } from 'rxjs';
-import { SchoolDescription } from 'src/Interfaces/login-module';
+import { SchoolDescription } from 'src/Interfaces/login-models';
 
 @Injectable({
   providedIn: 'root'

@@ -1,4 +1,4 @@
-import { PageSection } from "src/Interfaces/page-skeleton-module";
+import { PageSection } from "src/Interfaces/page-skeleton-models";
 
 export const PAGE_SECTIONS: PageSection[] = [
     {

@@ -30,6 +30,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { SearchingFieldComponent } from './common/searching-field/searching-field.component';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { EditClassComponent } from './app-pages/classes/edit-class/edit-class.component';
+import {MatTableModule} from '@angular/material/table';
 
 const appRoutes: Routes = [
   { path: '', 
@@ -50,6 +52,7 @@ const appRoutes: Routes = [
       {path:'subjects', component: SubjectsComponent},
       {path:'marks', component: MarksComponent},
       {path:'classes', component: ClassesComponent},
+      {path: 'class/:classCode', component: EditClassComponent},
       {path:'students', component: StudentsComponent},
       {path:'teachers', component: TeachersComponent},
     ] 
@@ -66,6 +69,7 @@ const AngularMaterialsImports = [
   MatGridListModule,
   MatButtonModule,
   MatIconModule,
+  MatTableModule
 ]
 
 @NgModule({
@@ -82,7 +86,8 @@ const AngularMaterialsImports = [
     ClassesComponent,
     StudentsComponent,
     TeachersComponent,
-    SearchingFieldComponent
+    SearchingFieldComponent,
+    EditClassComponent
   ],
   imports: [
     BrowserModule, 
