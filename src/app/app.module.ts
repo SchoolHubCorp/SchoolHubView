@@ -32,6 +32,8 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { EditClassComponent } from './app-pages/classes/edit-class/edit-class.component';
 import {MatTableModule} from '@angular/material/table';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ResponseMessageDialogComponent } from './common/response-message-dialog/response-message-dialog.component';
 
 const appRoutes: Routes = [
   { path: '', 
@@ -69,7 +71,8 @@ const AngularMaterialsImports = [
   MatGridListModule,
   MatButtonModule,
   MatIconModule,
-  MatTableModule
+  MatTableModule,
+  MatDialogModule
 ]
 
 @NgModule({
@@ -87,7 +90,8 @@ const AngularMaterialsImports = [
     StudentsComponent,
     TeachersComponent,
     SearchingFieldComponent,
-    EditClassComponent
+    EditClassComponent,
+    ResponseMessageDialogComponent
   ],
   imports: [
     BrowserModule, 

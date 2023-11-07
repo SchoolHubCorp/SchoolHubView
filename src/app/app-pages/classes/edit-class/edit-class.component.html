@@ -6,9 +6,12 @@
                     <div class="pupil-card">
                         <div class="pupil-card__name">
                             <span>{{pupil.firstName}} </span>
+                            <br>
                             <span>{{pupil.lastName}}</span>
                         </div>
-                        <button mat-raised-button color="primary" (click)="showPupil()">View</button>
+                        <div class="button-container">
+                            <button mat-raised-button color="primary" (click)="showPupil()">View</button>
+                        </div>
                     </div>
             </mat-grid-tile>
         </mat-grid-list>

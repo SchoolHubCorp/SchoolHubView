@@ -6,6 +6,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { EntranceResponse, LoginPostData, RegisterPostData } from 'src/Interfaces/login-models';
 import { SignInUpService } from './sign-in-up.service';
 import { Subscription } from 'rxjs';
+import { ResponseMessageType } from 'src/Interfaces/response-message';
+import { ShowResponseMessageService } from 'src/services/show-response-message.service';
 
 @Component({
   selector: 'app-sign-in-up',
@@ -28,6 +30,7 @@ export class SignInUpComponent implements OnInit, OnDestroy {
     private router: Router,
     private fb: FormBuilder,
     private signInUpService: SignInUpService,
+    private showResponseMessageService: ShowResponseMessageService
   ){}
 
   ngOnInit(): void {
@@ -139,6 +142,7 @@ export class SignInUpComponent implements OnInit, OnDestroy {
         this.signInUpService.registerParent(this.registerParentPostData)
           .subscribe(
             response => {
+              this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'You have been register!');
               this.reloadPage();
             },
             (error: HttpErrorResponse) => {
@@ -153,6 +157,7 @@ export class SignInUpComponent implements OnInit, OnDestroy {
         this.signInUpService.registerUser(this.registerUserPostData)
         .subscribe(
           response => {
+            this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'You have been register!');
             this.reloadPage();
           },
           (error: HttpErrorResponse ) => {

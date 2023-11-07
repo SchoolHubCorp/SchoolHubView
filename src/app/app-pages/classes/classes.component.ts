@@ -4,7 +4,9 @@ import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { ClassResponse } from 'src/Interfaces/plan-models';
+import { ResponseMessageType } from 'src/Interfaces/response-message';
 import { ClassRequestService } from 'src/services/server-requests/class-request.service';
+import { ShowResponseMessageService } from 'src/services/show-response-message.service';
 
 @Component({
   selector: 'app-classes',
@@ -22,6 +24,7 @@ export class ClassesComponent implements OnInit, OnDestroy {
   constructor(
     private classRequestService: ClassRequestService,
     private router: Router,
+    private showResponseMessageService: ShowResponseMessageService
   ) {}
 
   ngOnInit(): void {
@@ -44,9 +47,11 @@ export class ClassesComponent implements OnInit, OnDestroy {
             this.refreshSubjectsList();
             this.addingClassFormController.reset();
             console.log(response);
+            this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Class has been added successfully');
           },
           (error: HttpErrorResponse) => {
             console.log(error);
+            this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
           }
         )
       );
@@ -65,9 +70,11 @@ export class ClassesComponent implements OnInit, OnDestroy {
       .subscribe(response => {
           this.refreshSubjectsList();
           console.log(response);
+          this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Class has been deleted successfully');
         },
         (error: HttpErrorResponse) => {
           console.log(error);
+          this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
         }
       )
     );

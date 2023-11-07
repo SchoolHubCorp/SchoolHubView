@@ -5,6 +5,8 @@ import { ClassDataResponse, PupilInClass } from 'src/Interfaces/pupil-models';
 import { FormControl, Validators } from '@angular/forms';
 import { ClassRequestService } from 'src/services/server-requests/class-request.service';
 import { PlanRequestService } from 'src/services/server-requests/plan-request.service';
+import { ShowResponseMessageService } from 'src/services/show-response-message.service';
+import { ResponseMessageType } from 'src/Interfaces/response-message';
 
 @Component({
   selector: 'app-edit-class',
@@ -47,6 +49,7 @@ export class EditClassComponent implements OnInit, OnDestroy {
   constructor(
     private classRequestService: ClassRequestService,
     private planRequestService: PlanRequestService,
+    private showResponseMessageService: ShowResponseMessageService
   ) {}
 
   ngOnInit(): void {
@@ -71,9 +74,12 @@ export class EditClassComponent implements OnInit, OnDestroy {
         this.planRequestService.setClassPlan(this.selectedFile, this.classData.id)
         .subscribe(response => {
           console.log(response);
+          this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Plan has been upload successfully');
+
         },
         (error: HttpErrorResponse) => {
           console.log(error);
+          this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
         })
       )
     } else {
@@ -89,9 +95,11 @@ export class EditClassComponent implements OnInit, OnDestroy {
         this.classRequestService.updateClassname(this.classData.id, this.editClassFormController.value)
         .subscribe(response => {
             console.log(response);
+            this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Classname has been updated successfully');
           },
           (error: HttpErrorResponse) => {
             console.log(error);
+            this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
           }
         )
       );
@@ -115,6 +123,7 @@ export class EditClassComponent implements OnInit, OnDestroy {
       },
       (error: HttpErrorResponse) => {
         console.log(error);
+        this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
       })
     );
   }
