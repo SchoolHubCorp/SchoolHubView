@@ -1,7 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -24,14 +23,13 @@ import { PlanComponent } from './app-pages/plan/plan.component';
 import { SubjectsComponent } from './app-pages/subjects/subjects.component';
 import { MarksComponent } from './app-pages/marks/marks.component';
 import { ClassesComponent } from './app-pages/classes/classes.component';
-import { StudentsComponent } from './app-pages/students/students.component';
-import { TeachersComponent } from './app-pages/teachers/teachers.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { SearchingFieldComponent } from './common/searching-field/searching-field.component';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { EditClassComponent } from './app-pages/classes/edit-class/edit-class.component';
 import {MatTableModule} from '@angular/material/table';
+import { StudentsTeachersComponent } from './app-pages/students-teachers/students-teachers.component';
 
 const appRoutes: Routes = [
   { path: '', 
@@ -53,8 +51,8 @@ const appRoutes: Routes = [
       {path:'marks', component: MarksComponent},
       {path:'classes', component: ClassesComponent},
       {path: 'class/:classCode', component: EditClassComponent},
-      {path:'students', component: StudentsComponent},
-      {path:'teachers', component: TeachersComponent},
+      {path:'students', component: StudentsTeachersComponent},
+      {path:'teachers', component: StudentsTeachersComponent},
     ] 
   }
 ];
@@ -84,8 +82,6 @@ const AngularMaterialsImports = [
     SubjectsComponent,
     MarksComponent,
     ClassesComponent,
-    StudentsComponent,
-    TeachersComponent,
     SearchingFieldComponent,
     EditClassComponent
   ],

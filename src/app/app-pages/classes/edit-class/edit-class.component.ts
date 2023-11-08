@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, switchMap } from 'rxjs';
-import { ClassDataResponse, PupilInClass } from 'src/Interfaces/pupil-models';
+import { ClassDataResponse, PupilInClass } from 'src/Interfaces/pupils-models';
 import { FormControl, Validators } from '@angular/forms';
 import { ClassRequestService } from 'src/services/server-requests/class-request.service';
 import { PlanRequestService } from 'src/services/server-requests/plan-request.service';
