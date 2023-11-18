@@ -25,14 +25,14 @@ export class ClassesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.refreshSubjectsList();
+    this.refreshClassesList();
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
-  refreshSubjectsList(): void {
+  refreshClassesList(): void {
     this.classesList$ = this.classRequestService.getAllClasses();
   }
 
@@ -41,7 +41,7 @@ export class ClassesComponent implements OnInit, OnDestroy {
       this.subscription.add(
         this.classRequestService.postClass(this.addingClassFormController.value)
         .subscribe(response => {
-            this.refreshSubjectsList();
+            this.refreshClassesList();
             this.addingClassFormController.reset();
             console.log(response);
           },
@@ -63,7 +63,7 @@ export class ClassesComponent implements OnInit, OnDestroy {
     this.subscription.add(
       this.classRequestService.deleteClass(classroomId)
       .subscribe(response => {
-          this.refreshSubjectsList();
+          this.refreshClassesList();
           console.log(response);
         },
         (error: HttpErrorResponse) => {

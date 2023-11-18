@@ -21,7 +21,7 @@ export class PupilsRequestService {
       'Authorization': `Bearer ${token}`,
     });
     
-    return this.http.get<AllPupilsShortResponse[]>(`${this.url}/api/Pupils`, { headers: headers });
+    return this.http.get<AllPupilsShortResponse[]>(`${this.url}/api/Pupil`, { headers: headers });
   }
 
   getPupilInfo(pupilId: number): Observable<PupilResponse> {
@@ -57,13 +57,16 @@ export class PupilsRequestService {
     });
 
     const requestBody = {
-      pupil: pupil
+      firstName: pupil.firstName,
+      lastName: pupil.lastName,
+      phoneNumber: pupil.phoneNumber.toString(),
+      pesel: pupil.pesel
     };
 
-    return this.http.put(`${this.url}/api/Teacher/${pupil.id}`, requestBody, { headers: headers });
+    return this.http.put(`${this.url}/api/Pupil/${pupil.id}`, requestBody, { headers: headers });
   }
 
-  uodatePupilClass(pupilId: number): Observable<any> {
+  updatePupilClass(pupilId: number, classroomId: number): Observable<any> {
     const token = localStorage.getItem('access_token');
     const headers = new HttpHeaders({
       'Accept' : '*/*',
@@ -72,9 +75,9 @@ export class PupilsRequestService {
     });
 
     const requestBody = {
-      pupilId: pupilId
+      classroomId: classroomId
     };
 
-    return this.http.put(`${this.url}/api/PupilClass/${pupilId}`, requestBody, { headers: headers });
+    return this.http.put(`${this.url}/api/Pupil/${pupilId}/changePupilClass`, requestBody, { headers: headers });
   }
 }

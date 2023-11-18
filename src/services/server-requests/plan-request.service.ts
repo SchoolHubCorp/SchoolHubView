@@ -26,6 +26,21 @@ export class PlanRequestService {
     });
   }  
 
+  getTeacherPlan(teacehrId: number): Observable<ArrayBuffer> {
+    const token = localStorage.getItem('access_token');
+  
+    const headers = new HttpHeaders({
+      'Accept' : '*/*',
+      'Content-Type' : 'application/json',
+      'Authorization': `Bearer ${token}`,
+    });
+  
+    return this.http.get(`${this.url}/api/Teacher/${teacehrId}/plan`, {
+      headers: headers,
+      responseType: 'arraybuffer'
+    });
+  }
+
   setClassPlan(file: File, classroomId: number): Observable<any> {
     const token = localStorage.getItem('access_token');
   

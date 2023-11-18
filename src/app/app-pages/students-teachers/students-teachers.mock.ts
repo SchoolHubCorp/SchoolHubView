@@ -4,48 +4,48 @@ import { AllTeachersShortResponse, TeacherResponse } from "src/Interfaces/teache
 export const ALL_PUPILS: AllPupilsShortResponse[] = [
     {
       id: 1,
-      classroom: '7A',
-      name: 'Mark',
-      lastname: 'Zajanczkowski',
+      classname: '7A',
+      firstName: 'Mark',
+      lastName: 'Zajanczkowski',
     },
     {
       id: 2,
-      classroom: '8B',
-      name: 'Anna',
-      lastname: 'Smith',
+      classname: '8B',
+      firstName: 'Anna',
+      lastName: 'Smith',
     },
     {
       id: 3,
-      classroom: '6C',
-      name: 'Michael',
-      lastname: 'Johnson',
+      classname: '6C',
+      firstName: 'Michael',
+      lastName: 'Johnson',
     },
     {
       id: 4,
-      classroom: '9A',
-      name: 'Emily',
-      lastname: 'Davis',
+      classname: '9A',
+      firstName: 'Emily',
+      lastName: 'Davis',
     },
     {
       id: 5,
-      classroom: '7B',
-      name: 'Daniel',
-      lastname: 'Brown',
+      classname: '7B',
+      firstName: 'Daniel',
+      lastName: 'Brown',
     }
 ];
 
 export const СURRENT_PUPIL: PupilResponse = {
     privateInfo: {
         id: 1,
-        classId: 4,
-        classroom: '7A',
-        name: 'Mark',
-        lastname: "Zajanczkowski",
+        firstName: 'Mark',
+        lastName: "Zajanczkowski",
         email: 'm.zaja@gmail.com',
         phoneNumber: '586958425',
         pesel: '7895862569',
     },
-    parentsInfo: [
+    classname: '7A',
+    classroomId: 4,
+    parents: [
         {
             name: 'Vova',
             lastname: 'Yakor',
@@ -62,47 +62,47 @@ export const СURRENT_PUPIL: PupilResponse = {
 
 export const ALL_TEACHERS: AllTeachersShortResponse[] = [
     {
-      teacherId: '7',
-      name: 'Perła',
-      lastname: 'Mocna',
-      quantityOfSubjects: 8,
+      id: 7,
+      firstName: 'Perła',
+      lastName: 'Mocna',
+      quantityOfsubjects: 8,
     },
     {
-      teacherId: '8',
-      name: 'Alex',
-      lastname: 'Johnson',
-      quantityOfSubjects: 6,
+      id: 8,
+      firstName: 'Alex',
+      lastName: 'Johnson',
+      quantityOfsubjects: 6,
     },
     {
-      teacherId: '9',
-      name: 'Elena',
-      lastname: 'Garcia',
-      quantityOfSubjects: 7,
+      id: 9,
+      firstName: 'Elena',
+      lastName: 'Garcia',
+      quantityOfsubjects: 7,
     },
     {
-      teacherId: '10',
-      name: 'David',
-      lastname: 'Lee',
-      quantityOfSubjects: 5,
+      id: 10,
+      firstName: 'David',
+      lastName: 'Lee',
+      quantityOfsubjects: 5,
     },
     {
-      teacherId: '11',
-      name: 'Olivia',
-      lastname: 'Smith',
-      quantityOfSubjects: 9,
+      id: 11,
+      firstName: 'Olivia',
+      lastName: 'Smith',
+      quantityOfsubjects: 9,
     }
 ];
   
 export const СURRENT_TEACHER: TeacherResponse = {
     privateInfo: {
       id: 7,
-      name: 'Perła',
-      lastname: "Mocna",
+      firstName: 'Perła',
+      lastName: "Mocna",
       email: 'p.moc@gmail.com',
       phoneNumber: '586958425',
       pesel: '7895862569',
     },
-    subjects: [
+    courses: [
       {
         subjectName: 'Geometry',
         subjectGroup: '6A',

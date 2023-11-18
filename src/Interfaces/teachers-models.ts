@@ -1,14 +1,14 @@
 export interface AllTeachersShortResponse {
-    teacherId: string;
-    name: string;
-    lastname: string;
-    quantityOfSubjects: number;
+    id: number;
+    firstName: string;
+    lastName: string;
+    quantityOfsubjects: number;
 }
 
 export interface TeacherPrivateInfo {
     id: number;
-    name: string;
-    lastname: string;
+    firstName: string;
+    lastName: string;
     email: string;
     phoneNumber: string;
     pesel: string;
@@ -21,5 +21,5 @@ export interface TeachersSubjects {
 
 export interface TeacherResponse {
     privateInfo: TeacherPrivateInfo;
-    subjects: TeachersSubjects[];
+    courses: TeachersSubjects[];
 }

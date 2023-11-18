@@ -14,17 +14,15 @@ export interface PupilInClass {
 
 export interface AllPupilsShortResponse {
     id: number;
-    classroom: string;
-    name: string;
-    lastname: string;
+    classname: string;
+    firstName: string;
+    lastName: string;
 }
 
 export interface PupilPrivateInfo {
     id: number;
-    classId: number;
-    classroom: string;
-    name: string;
-    lastname: string;
+    firstName: string;
+    lastName: string;
     email: string;
     phoneNumber: string;
     pesel: string;
@@ -38,5 +36,7 @@ export interface PupilsParents {
 
 export interface PupilResponse {
     privateInfo: PupilPrivateInfo;
-    parentsInfo: PupilsParents[];
+    classroomId: number;
+    classname: string;
+    parents: PupilsParents[];
 }

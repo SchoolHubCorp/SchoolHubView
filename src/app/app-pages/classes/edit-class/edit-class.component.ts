@@ -2,9 +2,13 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, switchMap } from 'rxjs';
 import { ClassDataResponse, PupilInClass } from 'src/Interfaces/pupils-models';
-import { FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClassRequestService } from 'src/services/server-requests/class-request.service';
 import { PlanRequestService } from 'src/services/server-requests/plan-request.service';
+import { TeachersRequestService } from 'src/services/server-requests/teachers-request.service';
+import { AllTeachersShortResponse } from 'src/Interfaces/teachers-models';
+import { AddSubject, AddSubjectRequest } from 'src/Interfaces/subjects-models';
+import { SubjectsRequestService } from 'src/services/server-requests/subjects-request.service';
 
 @Component({
   selector: 'app-edit-class',
@@ -15,6 +19,10 @@ export class EditClassComponent implements OnInit, OnDestroy {
   pupilsList!: PupilInClass[];
   chosenClassId!: number;
   selectedFile: File | null = null;
+  addSubjectForm: FormGroup = new FormGroup({});
+  teacherList!: AllTeachersShortResponse[];
+  selectedTeacherId!: number;
+  searchTeachersList!: string[];
   displayedColumns: string[] = ['position', 'name', 'code', 'edit', 'delete'];
   subjectsList = [
     { position: 1, code: '23531', name: 'Math 3y A' },
@@ -46,10 +54,19 @@ export class EditClassComponent implements OnInit, OnDestroy {
   
   constructor(
     private classRequestService: ClassRequestService,
+    private subjectsRequestService: SubjectsRequestService,
+    private teachersRequestService: TeachersRequestService,
     private planRequestService: PlanRequestService,
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
+    this.getChoosenClass();
+    this.uploadTeacherList();
+    this.initAddSubjectForm();
+  }
+
+  getChoosenClass(): void {
     const state = window.history.state;
     if (state && state.chosenClass) {
         this.chosenClassId = state.chosenClass.id;
@@ -63,6 +80,29 @@ export class EditClassComponent implements OnInit, OnDestroy {
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0] as File;
+  }
+
+  addSubject(subjectData: AddSubject): void {
+    const subject: AddSubjectRequest = {
+      courseName: subjectData.subject,
+      teacherId: this.selectedTeacherId,
+      classroomId: this.chosenClassId
+    }
+    this.subjectsRequestService.addSubject(subject)
+    .subscribe(response => {
+      this.initAddSubjectForm()
+      console.log(response);
+    },
+    (error: HttpErrorResponse) => {
+      console.log(error);
+    })
+  }
+
+  initAddSubjectForm(): void {
+    this.addSubjectForm = this.fb.group({
+      subject: ['', [Validators.required]],
+      teacher: ['', [Validators.required]],
+    });
   }
 
   onUpload(): void {
@@ -118,4 +158,31 @@ export class EditClassComponent implements OnInit, OnDestroy {
       })
     );
   }
+
+  onTeacherSelected(selectedTeacher: string) {
+    const takenTeacher: AllTeachersShortResponse = this.teacherList.find((list) => selectedTeacher === `${list.firstName} ${list.lastName}`) as AllTeachersShortResponse;
+    if (takenTeacher) {
+     this.selectedTeacherId = takenTeacher.id;
+    }
+  }
+
+  uploadTeacherList(): void {
+    this.searchTeachersList = [];
+    this.subscription.add(
+      this.teachersRequestService.getAllTeachers()
+      .subscribe(
+        (teachersList: AllTeachersShortResponse[]) => {
+          teachersList.forEach(teacher => {
+            this.teacherList = teachersList;
+            const teacherName: string = `${teacher.firstName} ${teacher.lastName}`;
+            this.searchTeachersList.push(teacherName);
+          });
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+        }
+      )
+    );
+  }
+  
 }

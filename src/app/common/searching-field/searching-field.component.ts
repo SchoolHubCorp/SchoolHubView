@@ -10,12 +10,14 @@ import { Observable, map, startWith } from 'rxjs';
 export class SearchingFieldComponent {
   @Input() searchList!: string[];
   @Input() searchItem!: string;
+  @Input() defaultValue!: string;
   @Output() selectedClass: EventEmitter<string> = new EventEmitter();
   
   myControl = new FormControl('');
   filteredOptions!: Observable<string[]>;
 
   ngOnInit() {
+    this.myControl.patchValue(this.defaultValue);
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || '')),

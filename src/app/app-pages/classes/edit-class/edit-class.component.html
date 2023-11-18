@@ -1,17 +1,38 @@
 <div class="page-container">
-    <div class="pupil-table">
-        <mat-grid-list cols="4" rowHeight="1:1">
-            <mat-grid-tile 
-                *ngFor="let pupil of pupilsList">
-                    <div class="pupil-card">
-                        <div class="pupil-card__name">
-                            <span>{{pupil.firstName}} </span>
-                            <span>{{pupil.lastName}}</span>
+    <div class="left-side">
+        <div class="pupil-table">
+            <mat-grid-list cols="4" rowHeight="1:1">
+                <mat-grid-tile 
+                    *ngFor="let pupil of pupilsList">
+                        <div class="pupil-card">
+                            <div class="pupil-card__name">
+                                <span>{{pupil.firstName}} </span>
+                                <span>{{pupil.lastName}}</span>
+                            </div>
+                            <button mat-raised-button color="primary" (click)="showPupil()">View</button>
                         </div>
-                        <button mat-raised-button color="primary" (click)="showPupil()">View</button>
-                    </div>
-            </mat-grid-tile>
-        </mat-grid-list>
+                </mat-grid-tile>
+            </mat-grid-list>
+        </div>
+        <div class="add-subject">
+            <span>Please, add new subject:</span>
+            <form  class="add-form" [formGroup]="addSubjectForm" (ngSubmit)="addSubject(addSubjectForm.value)">
+                <mat-form-field>
+                  <mat-label>Subject name</mat-label>
+                  <input matInput formControlName="subject" required>
+                </mat-form-field>
+                <div class="selector">
+                  <app-searching-field
+                    [searchList]="searchTeachersList"
+                    [searchItem]="'Teacher'"
+                    (selectedClass)="onTeacherSelected($event)"
+                  ></app-searching-field>
+                </div>
+                <button class="save-btn" mat-mini-fab color="primary" type="submit">
+                  <mat-icon>save</mat-icon>
+                </button>
+              </form>
+        </div>
     </div>
     <div class="right-side">
         <div class="classname borders">

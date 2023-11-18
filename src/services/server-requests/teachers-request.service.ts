@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { AllTeachersShortResponse, TeacherPrivateInfo, TeacherResponse } from 'src/Interfaces/teachers-models';
 import { SERVICE_URL } from 'src/constants/service';
 
@@ -21,7 +21,7 @@ export class TeachersRequestService {
       'Authorization': `Bearer ${token}`,
     });
     
-    return this.http.get<AllTeachersShortResponse[]>(`${this.url}/api/Teachers`, { headers: headers });
+    return this.http.get<AllTeachersShortResponse[]>(`${this.url}/api/Teacher`, { headers: headers });
   }
 
   getTeacherInfo(teacherId: number): Observable<TeacherResponse> {
@@ -33,7 +33,7 @@ export class TeachersRequestService {
       'Authorization': `Bearer ${token}`,
     });
 
-    return this.http.get<TeacherResponse>(`${this.url}/api/Teachers/${teacherId}`, { headers: headers });
+    return this.http.get<TeacherResponse>(`${this.url}/api/Teacher/${teacherId}`, { headers: headers });
   }
 
   addTeacher(teacher: TeacherPrivateInfo): Observable<any> {
@@ -61,7 +61,10 @@ export class TeachersRequestService {
     });
 
     const requestBody = {
-      teacher: teacher
+      firstName: teacher.firstName,
+      lastName: teacher.lastName,
+      phoneNumber: teacher.phoneNumber.toString(),
+      pesel: teacher.pesel
     };
 
     return this.http.put(`${this.url}/api/Teacher/${teacher.id}`, requestBody, { headers: headers });
@@ -75,6 +78,26 @@ export class TeachersRequestService {
       'Authorization': `Bearer ${token}`,
     });
     
-    return this.http.delete(`${this.url}/api/Teachers/${teacherId}`, { headers: headers });
+    return this.http.delete(`${this.url}/api/Teacher/${teacherId}`, { headers: headers });
+  }
+
+  setTeacherPlan(file: File, teacehrId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+  
+    const headers = new HttpHeaders({
+      'Accept' : '*/*',
+      'Authorization': `Bearer ${token}`,
+    });
+  
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+  
+    return this.http.post(`${this.url}/api/Teacher/${teacehrId}/plan`, formData, {
+      headers: headers,
+      observe: 'response',
+      responseType: 'text'
+    }).pipe(
+      map(response => response.body)
+    );
   }
 }

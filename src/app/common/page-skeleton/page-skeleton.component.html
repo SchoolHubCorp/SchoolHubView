@@ -1,7 +1,7 @@
 <div class="container">
     <div class="header">
         <div class="buttons-container" *ngIf="userRole === 'Admin'; else otherRoles">
-            <div class="select-button-container" *ngFor="let page of pages.slice(1)">
+            <div class="select-button-container" *ngFor="let page of pages.slice(2)">
                 <button class="select-page-button" [routerLink]="[page.route]">
                     <div class="icon-circle">
                         <mat-icon fontIcon={{page.icon}}></mat-icon>

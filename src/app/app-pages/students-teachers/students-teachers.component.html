@@ -1,1 +1,101 @@
-<p>students-teachers works!</p>
+<div class="page-container">
+    <div class="users-list">
+        <div 
+        *ngFor="let user of usersList$ | async"
+        (click)="selectUser(user.id)" 
+        [class.selected]="selectedUserId === user.id"
+        class="card"
+        >   
+            <div class="name">
+                <span>{{user.name}}</span>
+                <span>{{user.lastname}}</span>
+            </div>
+            <div class="special-number" *ngIf="role === 'students'; else teacher">
+                <span>Classname:</span>
+                <span>{{user.specialNumber}}</span>
+            </div>
+            <ng-template class="special-number" #teacher>
+                <span>Subjects amount:</span>
+                <span>{{user.specialNumber}}</span>
+            </ng-template>
+        </div>
+    </div>
+    <div class="user-info">
+        <ng-container *ngTemplateOutlet="userInfoTemplate"></ng-container>
+    </div>
+
+    <ng-template #userInfoTemplate>
+        <div class="info-container"  *ngIf="isUserListEmpty()">
+            <div class="info-form-container">
+                <form [formGroup] = "privateInfoForm" (ngSubmit)="updatePrivateInfo(privateInfoForm.value)" validateOnSubmit novalidate>
+                    <mat-form-field>
+                        <mat-label>First Name</mat-label>
+                        <input formControlName="firstName" name="firstName" matInput>
+                        <mat-error *ngIf="checkUpdatePrivateError('firstName', 'required')">First Name is required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Last Name</mat-label>
+                        <input formControlName="lastName" name="lastName" matInput>
+                        <mat-error *ngIf="checkUpdatePrivateError('lastName', 'required')">Last Name is required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Email Adress</mat-label>
+                        <input formControlName="email" name="email" type="email" [readonly]="true" matInput>
+                        <mat-error *ngIf="checkUpdatePrivateError('email', 'required')">Email Adress is required</mat-error>
+                        <mat-error *ngIf="checkUpdatePrivateError('email', 'pattern')">Incorrect email form</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Phone Number</mat-label>
+                        <input formControlName="phoneNumber" name="phoneNumber" type="number" matInput>
+                        <mat-error *ngIf="checkUpdatePrivateError('phoneNumber', 'required')">Phone Number is required</mat-error>
+                        <mat-error *ngIf="checkUpdatePrivateError('phoneNumber', 'min')">Incorrect phone number form</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>PESEL</mat-label>
+                        <input formControlName="pesel" name="pesel" matInput>
+                        <mat-error *ngIf="checkUpdatePrivateError('pesel', 'required')">PESEL is required</mat-error>
+                    </mat-form-field>
+                    <div class="submit-button">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="!privateInfoForm.valid">Update information</button>
+                    </div>
+                </form>
+            </div>
+            <div class="custom-input borders">
+                <div class="student-class" *ngIf="generatedUser.role === 'students'; else teacher">
+                    <div class="current-class">
+                        <span>Current class: {{pupilInfo.classname}}</span>
+                    </div>
+                    <div class="update-class">
+                        <span>Please, choose new class from the list:</span>
+                        <div class="selector">
+                            <app-searching-field 
+                            [searchList]="classNameList" 
+                            [searchItem]="'New class'"
+                            (selectedClass)="onClassSelected($event)"
+                            >
+                            </app-searching-field>
+                            <button class="save-btn" mat-mini-fab color="primary" (click)="updatePupilClass()">
+                                <mat-icon>save</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <ng-template #teacher>
+                    <div class="teacher-plan">
+                        <span>Please, choose plan image:</span>
+                        <div class="file-input">
+                            <input type="file" (change)="onFileSelected($event)">
+                            <button mat-raised-button color="primary" (click)="onTeacherPlanUpload()">Upload</button>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+            <div class="custom-table">
+
+            </div>
+            <div class="delete-button">
+                <button mat-raised-button color="warn" (click)="deleteUser()">Delete user</button>
+            </div>
+        </div>
+    </ng-template>
+</div>

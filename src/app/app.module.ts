@@ -83,7 +83,8 @@ const AngularMaterialsImports = [
     MarksComponent,
     ClassesComponent,
     SearchingFieldComponent,
-    EditClassComponent
+    EditClassComponent,
+    StudentsTeachersComponent,
   ],
   imports: [
     BrowserModule, 
