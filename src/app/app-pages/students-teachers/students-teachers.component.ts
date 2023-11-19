@@ -11,6 +11,10 @@ import { TeacherPrivateInfo, TeacherResponse } from 'src/Interfaces/teachers-mod
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClassRequestService } from 'src/services/server-requests/class-request.service';
 import { ClassResponse } from 'src/Interfaces/plan-models';
+import { ShowResponseMessageService } from 'src/services/show-response-message.service';
+import { ResponseMessageType } from 'src/Interfaces/response-message';
+import { MatDialog } from '@angular/material/dialog';
+import { AddTeacherComponent } from './add-teacher/add-teacher.component';
 
 @Component({
   selector: 'app-students-teachers',
@@ -38,6 +42,8 @@ export class StudentsTeachersComponent implements OnInit, OnDestroy{
     private teachersRequestService: TeachersRequestService,
     private classRequestService: ClassRequestService,
     private fb: FormBuilder,
+    private showResponseMessageService: ShowResponseMessageService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -107,9 +113,11 @@ export class StudentsTeachersComponent implements OnInit, OnDestroy{
       this.subscription.add(
         this.teachersRequestService.setTeacherPlan(this.selectedFile, this.generatedUser.id)
         .subscribe(response => {
+          this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Plan has been upload successfully');
           console.log(response);
         },
         (error: HttpErrorResponse) => {
+          this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
           console.log(error);
         })
       )
@@ -179,9 +187,11 @@ export class StudentsTeachersComponent implements OnInit, OnDestroy{
       .subscribe(response => {
         this.getUserInfo();
         this.uploadUsersList();
+        this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Info updated successfully');
         console.log(response);
         },
         (error: HttpErrorResponse) => {
+          this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
           console.log(error);
         }
       )
@@ -191,23 +201,29 @@ export class StudentsTeachersComponent implements OnInit, OnDestroy{
       .subscribe(response => {
         this.getUserInfo();
         this.uploadUsersList();
+        this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Info updated successfully');
         console.log(response);
         },
         (error: HttpErrorResponse) => {
+          this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
           console.log(error);
         }
       )
     }
   }
 
+  //Edit!!!
   deleteUser(): void {
     if(this.generatedUser.role === 'students') {
       this.subscription.add(
         this.pupilsRequestService.deletePupil(this.generatedUser.id)
         .subscribe(response => {
+          //window.location.reload();
+          this.showResponseMessageService.openDialog(ResponseMessageType.Success, response);
           console.log(response);
           },
           (error: HttpErrorResponse) => {
+            this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
             console.log(error);
           }
         )
@@ -217,28 +233,17 @@ export class StudentsTeachersComponent implements OnInit, OnDestroy{
       this.subscription.add(
         this.teachersRequestService.deleteTeacher(this.generatedUser.id)
         .subscribe(response => {
+          this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Teacher has been deleted successfully');
+          //window.location.reload();
           console.log(response);
           },
           (error: HttpErrorResponse) => {
+            this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
             console.log(error);
           }
         )
       )
     }
-    window.location.reload();
-  }
-
-  addTeacher(teacherInfo: TeacherPrivateInfo): void {
-    this.subscription.add(
-      this.teachersRequestService.addTeacher(teacherInfo)
-      .subscribe(response => {
-        console.log(response);
-        },
-        (error: HttpErrorResponse) => {
-          console.log(error);
-        }
-      )
-    )
   }
 
   updatePupilClass(): void {
@@ -248,9 +253,11 @@ export class StudentsTeachersComponent implements OnInit, OnDestroy{
         .subscribe(response => {
           this.getUserInfo();
           this.uploadUsersList();
+          this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Class has been updated successfully');
           console.log(response);
           },
           (error: HttpErrorResponse) => {
+            this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
             console.log(error);
           }
         )
@@ -278,5 +285,14 @@ export class StudentsTeachersComponent implements OnInit, OnDestroy{
         }
       )
     )
+  }
+  
+  addTeacher(): void {
+    const dialogRef = this.dialog.open(AddTeacherComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.getUserInfo();
+      this.uploadUsersList();
+    });
   }
 }

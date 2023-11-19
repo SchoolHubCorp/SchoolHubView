@@ -29,7 +29,10 @@ import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { EditClassComponent } from './app-pages/classes/edit-class/edit-class.component';
 import {MatTableModule} from '@angular/material/table';
+import {MatDialogModule} from '@angular/material/dialog';
+import { ResponseMessageDialogComponent } from './common/response-message-dialog/response-message-dialog.component';
 import { StudentsTeachersComponent } from './app-pages/students-teachers/students-teachers.component';
+import { AddTeacherComponent } from './app-pages/students-teachers/add-teacher/add-teacher.component';
 
 const appRoutes: Routes = [
   { path: '', 
@@ -67,7 +70,8 @@ const AngularMaterialsImports = [
   MatGridListModule,
   MatButtonModule,
   MatIconModule,
-  MatTableModule
+  MatTableModule,
+  MatDialogModule
 ]
 
 @NgModule({
@@ -84,7 +88,10 @@ const AngularMaterialsImports = [
     ClassesComponent,
     SearchingFieldComponent,
     EditClassComponent,
+    ResponseMessageDialogComponent,
+    EditClassComponent,
     StudentsTeachersComponent,
+    AddTeacherComponent,
   ],
   imports: [
     BrowserModule, 

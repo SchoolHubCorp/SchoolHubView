@@ -94,6 +94,9 @@
 
             </div>
             <div class="delete-button">
+                <div *ngIf="generatedUser.role === 'teachers'" class="add-teacher">
+                    <button mat-raised-button color="primary" (click)="addTeacher()">Add teacher</button>
+                </div>
                 <button mat-raised-button color="warn" (click)="deleteUser()">Delete user</button>
             </div>
         </div>

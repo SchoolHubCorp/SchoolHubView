@@ -5,6 +5,8 @@ import { ClassDataResponse, PupilInClass } from 'src/Interfaces/pupils-models';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClassRequestService } from 'src/services/server-requests/class-request.service';
 import { PlanRequestService } from 'src/services/server-requests/plan-request.service';
+import { ShowResponseMessageService } from 'src/services/show-response-message.service';
+import { ResponseMessageType } from 'src/Interfaces/response-message';
 import { TeachersRequestService } from 'src/services/server-requests/teachers-request.service';
 import { AllTeachersShortResponse } from 'src/Interfaces/teachers-models';
 import { AddSubject, AddSubjectRequest } from 'src/Interfaces/subjects-models';
@@ -57,6 +59,7 @@ export class EditClassComponent implements OnInit, OnDestroy {
     private subjectsRequestService: SubjectsRequestService,
     private teachersRequestService: TeachersRequestService,
     private planRequestService: PlanRequestService,
+    private showResponseMessageService: ShowResponseMessageService,
     private fb: FormBuilder,
   ) {}
 
@@ -90,10 +93,12 @@ export class EditClassComponent implements OnInit, OnDestroy {
     }
     this.subjectsRequestService.addSubject(subject)
     .subscribe(response => {
-      this.initAddSubjectForm()
+      this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Subject has been added successfully');
+      this.initAddSubjectForm();
       console.log(response);
     },
     (error: HttpErrorResponse) => {
+      this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
       console.log(error);
     })
   }
@@ -111,9 +116,12 @@ export class EditClassComponent implements OnInit, OnDestroy {
         this.planRequestService.setClassPlan(this.selectedFile, this.classData.id)
         .subscribe(response => {
           console.log(response);
+          this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Plan has been upload successfully');
+
         },
         (error: HttpErrorResponse) => {
           console.log(error);
+          this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
         })
       )
     } else {
@@ -129,9 +137,11 @@ export class EditClassComponent implements OnInit, OnDestroy {
         this.classRequestService.updateClassname(this.classData.id, this.editClassFormController.value)
         .subscribe(response => {
             console.log(response);
+            this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Classname has been updated successfully');
           },
           (error: HttpErrorResponse) => {
             console.log(error);
+            this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
           }
         )
       );
@@ -155,6 +165,7 @@ export class EditClassComponent implements OnInit, OnDestroy {
       },
       (error: HttpErrorResponse) => {
         console.log(error);
+        this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
       })
     );
   }

@@ -1,0 +1,40 @@
+<div class="form-container">
+    <form [formGroup] = "registerForm" (ngSubmit)="onRegisterSubmit(registerForm.value)" validateOnSubmit novalidate>
+        <mat-form-field>
+            <mat-label>First Name</mat-label>
+            <input formControlName="firstName" name="firstName" matInput>
+            <mat-error *ngIf="checkRegisterError('firstName', 'required')">First Name is required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Last Name</mat-label>
+            <input formControlName="lastName" name="lastName" matInput>
+            <mat-error *ngIf="checkRegisterError('lastName', 'required')">Last Name is required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Email Adress</mat-label>
+            <input formControlName="email" name="email" type="email" matInput>
+            <mat-error *ngIf="checkRegisterError('email', 'required')">Email Adress is required</mat-error>
+            <mat-error *ngIf="checkRegisterError('email', 'pattern')">Incorrect email form</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Phone Number</mat-label>
+            <input formControlName="phone" name="phone" type="number" matInput>
+            <mat-error *ngIf="checkRegisterError('phone', 'required')">Phone Number is required</mat-error>
+            <mat-error *ngIf="checkRegisterError('phone', 'min')">Incorrect phone number form</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input formControlName="password" name="password" type="password" matInput>
+            <mat-error *ngIf="checkRegisterError('password', 'required')">Password is required</mat-error>
+            <mat-error *ngIf="checkRegisterError('password', 'pattern')">The entered password is not correct form</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>PESEL</mat-label>
+            <input formControlName="pesel" name="pesel" matInput>
+            <mat-error *ngIf="checkRegisterError('pesel', 'required')">PESEL is required</mat-error>
+        </mat-form-field>
+        <div class="submit-button">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!registerForm.valid">Sign Up</button>
+        </div>
+    </form>
+</div>

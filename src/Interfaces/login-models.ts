@@ -38,3 +38,12 @@ export interface EntranceResponse {
     token: string,
     role: string
 }
+
+export interface RegisterTeacher {
+    firstName: string,
+    lastName: string,
+    email: string,
+    phoneNumber: string,
+    password: string,
+    pesel: string,
+}
