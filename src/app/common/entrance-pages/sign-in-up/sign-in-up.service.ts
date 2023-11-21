@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { EntranceResponse, LoginPostData, RegisterPostData, RegisterTeacher } from 'src/Interfaces/login-models';
+import { EntranceResponse, LoginPostData, RegisterPostData } from 'src/Interfaces/login-models';
 import { SERVICE_URL } from 'src/constants/service';
 
 @Injectable({
@@ -25,4 +25,13 @@ export class SignInUpService {
   registerParent(registerData: RegisterPostData): Observable<EntranceResponse> {
     return this.http.post<EntranceResponse>(`${this.url}/api/Users/register/parent`, registerData);
   }
+
+  sentVerifyCode(email: string): Observable<any> {
+    const requestData = email;
+  
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  
+    return this.http.post(`${this.url}/api/Users/ForgotPassword`, requestData, { headers });
+  }
+  
 }

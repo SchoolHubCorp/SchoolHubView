@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription, switchMap } from 'rxjs';
-import { ClassDataResponse, PupilInClass } from 'src/Interfaces/pupils-models';
+import { ClassCourses, ClassDataResponse, PupilInClass } from 'src/Interfaces/pupils-models';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClassRequestService } from 'src/services/server-requests/class-request.service';
 import { PlanRequestService } from 'src/services/server-requests/plan-request.service';
@@ -25,27 +25,15 @@ export class EditClassComponent implements OnInit, OnDestroy {
   teacherList!: AllTeachersShortResponse[];
   selectedTeacherId!: number;
   searchTeachersList!: string[];
-  displayedColumns: string[] = ['position', 'name', 'code', 'edit', 'delete'];
-  subjectsList = [
-    { position: 1, code: '23531', name: 'Math 3y A' },
-    { position: 2, code: '47281', name: 'Science 2y B' },
-    { position: 3, code: '18392', name: 'History 4y C' },
-    { position: 4, code: '62948', name: 'English 3y A' },
-    { position: 5, code: '37462', name: 'Physics 2y B' },
-    { position: 6, code: '83729', name: 'Chemistry 4y C' },
-    { position: 7, code: '19283', name: 'Biology 3y A' },
-    { position: 8, code: '56372', name: 'Geography 2y B' },
-    { position: 9, code: '92674', name: 'Computer Science 4y C' },
-    { position: 10, code: '37482', name: 'Physical Education 3y A' },
-    { position: 11, code: '82917', name: 'Music 2y B' },
-    { position: 12, code: '61829', name: 'Art 4y C' },
-  ];
+  classSubjectsList!: ClassCourses[];
+  displayedColumns: string[] = ['position', 'name', 'teacher', 'delete'];
 
   classData: ClassDataResponse = {
     id: 0,
     className: '',
     classAccessCode: '',
-    pupils: []
+    pupils: [],
+    courses: []
   };
   
   private subscription: Subscription = new Subscription;
@@ -95,6 +83,7 @@ export class EditClassComponent implements OnInit, OnDestroy {
     .subscribe(response => {
       this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Subject has been added successfully');
       this.initAddSubjectForm();
+      this.getCurentClass();
       console.log(response);
     },
     (error: HttpErrorResponse) => {
@@ -155,6 +144,7 @@ export class EditClassComponent implements OnInit, OnDestroy {
         switchMap((classData: ClassDataResponse) => {
           this.classData = classData;
           this.pupilsList = classData.pupils;
+          this.classSubjectsList = classData.courses;
           this.editClassFormController.patchValue(classData.className);
           return this.classRequestService.getClassInfo(classData.id);
         })
@@ -196,4 +186,19 @@ export class EditClassComponent implements OnInit, OnDestroy {
     );
   }
   
+  deleteSubject(subjectId: number): void {
+    this.subscription.add(
+      this.subjectsRequestService.deleteSubject(subjectId)
+      .subscribe(response => {
+        console.log(response);
+        this.getCurentClass();
+        this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Subject has been deleted successfully');
+      },
+      (error: HttpErrorResponse) => {
+        console.log(error);
+        this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
+      }
+    )
+    )
+  }
 }

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AllPupilsShortResponse, PupilPrivateInfo, PupilResponse } from 'src/Interfaces/pupils-models';
+import { AllPupilsShortResponse, PupilPrivateInfo, PupilResponse, PupilSubjectLessonsResponse, PupilSubjects } from 'src/Interfaces/pupils-models';
 import { SERVICE_URL } from 'src/constants/service';
 
 @Injectable({
@@ -79,5 +79,29 @@ export class PupilsRequestService {
     };
 
     return this.http.put(`${this.url}/api/Pupil/${pupilId}/changePupilClass`, requestBody, { headers: headers });
+  }
+
+  getPersonalPupilSubjects(): Observable<PupilSubjects[]> {
+    const token = localStorage.getItem('access_token');
+
+    const headers = new HttpHeaders({
+      'Accept' : '*/*',
+      'Content-Type' : 'application/json',
+      'Authorization': `Bearer ${token}`,
+    });
+    
+    return this.http.get<PupilSubjects[]>(`${this.url}/api/Pupil/pupilCourses`, { headers: headers });
+  }
+
+  getPupilSubjectLessons(courseId: number): Observable<PupilSubjectLessonsResponse> {
+    const token = localStorage.getItem('access_token');
+
+    const headers = new HttpHeaders({
+      'Accept' : '*/*',
+      'Content-Type' : 'application/json',
+      'Authorization': `Bearer ${token}`,
+    });
+    
+    return this.http.get<PupilSubjectLessonsResponse>(`${this.url}/api/Pupil/${courseId}/Topics`, { headers: headers });
   }
 }

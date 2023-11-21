@@ -15,11 +15,24 @@ export interface TeacherPrivateInfo {
 }
 
 export interface TeachersSubjects {
-    subjectName: string;
-    subjectGroup: string;
+    id: number;
+    courseName: string;
+    className: string;
 }
 
 export interface TeacherResponse {
     privateInfo: TeacherPrivateInfo;
     courses: TeachersSubjects[];
+}
+
+export interface TeacherSubjectLessonsResponse {
+    id: number;
+    courseName: string
+    topics: TeacherSubjectLessons[];
+}
+
+export interface TeacherSubjectLessons {
+    id: number;
+    topicName: string;
+    topicDescription: string;
 }

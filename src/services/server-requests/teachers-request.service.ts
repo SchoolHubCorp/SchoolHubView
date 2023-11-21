@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { RegisterTeacher } from 'src/Interfaces/login-models';
-import { AllTeachersShortResponse, TeacherPrivateInfo, TeacherResponse } from 'src/Interfaces/teachers-models';
+import { AllTeachersShortResponse, TeacherSubjectLessonsResponse, TeacherPrivateInfo, TeacherResponse, TeachersSubjects } from 'src/Interfaces/teachers-models';
 import { SERVICE_URL } from 'src/constants/service';
 
 @Injectable({
@@ -97,5 +97,29 @@ export class TeachersRequestService {
     const requestBody = registerTeacher;
 
     return this.http.post<any>(`${this.url}/api/Teacher/register/teacher`, requestBody, { headers: headers });
+  }
+
+  getPersonalTeacherSubjects(): Observable<TeachersSubjects[]> {
+    const token = localStorage.getItem('access_token');
+
+    const headers = new HttpHeaders({
+      'Accept' : '*/*',
+      'Content-Type' : 'application/json',
+      'Authorization': `Bearer ${token}`,
+    });
+    
+    return this.http.get<TeachersSubjects[]>(`${this.url}/api/Teacher/teacherCourses`, { headers: headers });
+  }
+
+  getTeacherSubjectLessons(courseId: number): Observable<TeacherSubjectLessonsResponse> {
+    const token = localStorage.getItem('access_token');
+
+    const headers = new HttpHeaders({
+      'Accept' : '*/*',
+      'Content-Type' : 'application/json',
+      'Authorization': `Bearer ${token}`,
+    });
+    
+    return this.http.get<TeacherSubjectLessonsResponse>(`${this.url}/api/Teacher/${courseId}/Topics`, { headers: headers });
   }
 }

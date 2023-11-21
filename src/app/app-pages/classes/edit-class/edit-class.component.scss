@@ -132,9 +132,17 @@
         }
 
         .class-subjects {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
             width: 100%;
             height: calc(90% - 180px);
             padding: 10px 120px;
+
+            &__title {
+                font-size: large;
+                margin: 10px;
+            }
 
             &__table {
                 width: 100%;

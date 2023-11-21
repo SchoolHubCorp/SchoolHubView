@@ -1,1 +1,38 @@
-<p>subjects works!</p>
+<div class="page-container">
+    <div class="subjects-list">
+        <div 
+        *ngFor="let subject of subjectsList$ | async"
+        (click)="selectSubject(subject.id)" 
+        [class.selected]="selectedSubjectId === subject.id"
+        class="card"
+        >     
+            <div class="subject-name">Subject: {{subject.courseName}}</div>
+            <div class="special-number" *ngIf="role === 'Teacher'; else pupil">
+                <span>Classname: {{subject.specialParam}}</span>
+            </div>
+            <ng-template class="special-number" #pupil>
+                <span>Teacher: {{subject.specialParam}}</span>
+            </ng-template>
+        </div>
+    </div>
+    <div class="subject-info">
+        <ng-container *ngTemplateOutlet="userInfoTemplate"></ng-container>
+    </div>
+
+    <ng-template #userInfoTemplate>
+        <div class="info-container">
+            <div *ngIf="role === 'Teacher'" class="add-lesson">
+                <div class="add-lesson__button" (click)="addLesson()">
+                    <mat-icon>add_circle_outline</mat-icon>
+                </div>
+            </div>
+            <div 
+            class="lessons-list"
+            *ngFor="let lesson of lessonsList$ | async"
+            >
+                <span>Lesson topic: {{lesson.topicName}}</span>
+                <span>Lesson description: {{lesson.topicDescription}}</span>
+            </div>
+        </div>
+    </ng-template>
+</div>

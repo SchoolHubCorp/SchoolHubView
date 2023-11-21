@@ -1,10 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { RegisterTeacher } from 'src/Interfaces/login-models';
 import { ResponseMessageType } from 'src/Interfaces/response-message';
-import { SignInUpService } from 'src/app/common/entrance-pages/sign-in-up/sign-in-up.service';
 import { TeachersRequestService } from 'src/services/server-requests/teachers-request.service';
 import { ShowResponseMessageService } from 'src/services/show-response-message.service';
 
@@ -13,8 +13,9 @@ import { ShowResponseMessageService } from 'src/services/show-response-message.s
   templateUrl: './add-teacher.component.html',
   styleUrls: ['./add-teacher.component.scss']
 })
-export class AddTeacherComponent {
+export class AddTeacherComponent implements OnInit, OnDestroy {
   registerForm: FormGroup = new FormGroup({});
+  private subscription: Subscription = new Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -34,6 +35,10 @@ export class AddTeacherComponent {
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   onRegisterSubmit(post: any): void {
     const registerTeacherPostData: RegisterTeacher = {
       firstName: post.firstName,
@@ -43,17 +48,19 @@ export class AddTeacherComponent {
       password: post.password,
       pesel: post.pesel,
     }
-
-    this.teachersRequestService.registerTeacher(registerTeacherPostData)
-    .subscribe(response => {
-      this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Teacher has been registerd successfully');
-      this.dialogRef.close();
-      console.log(response);
-    },
-    (error: HttpErrorResponse) => {
-      this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
-      console.log(error);
-    })
+    
+    this.subscription.add(
+      this.teachersRequestService.registerTeacher(registerTeacherPostData)
+      .subscribe(response => {
+        this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Teacher has been registerd successfully');
+        this.dialogRef.close();
+        console.log(response);
+      },
+      (error: HttpErrorResponse) => {
+        this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
+        console.log(error);
+      })
+    )
   }
 
   public checkRegisterError = (controlName: string, errorName: string) => {

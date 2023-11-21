@@ -1,18 +1,13 @@
 import { Injectable } from '@angular/core';
-import { UserCardData, UserTransferData } from './students-teachers.interfaces';
+import { UserCardData } from './students-teachers.interfaces';
 import { AllPupilsShortResponse } from 'src/Interfaces/pupils-models';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { AllTeachersShortResponse } from 'src/Interfaces/teachers-models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentsTeachersService {
-  private selectedUserSubject = new BehaviorSubject<any>(null);
-  selectedUser$ = this.selectedUserSubject.asObservable();
-  
-  constructor() { }
-
   mapPupilsList(pupilsList: Observable<AllPupilsShortResponse[]>): Observable<UserCardData[]> {
     return pupilsList.pipe(
       map((list: AllPupilsShortResponse[]) => {
@@ -37,9 +32,5 @@ export class StudentsTeachersService {
         }));
       })
     );
-  }
-
-  selectUser(user: UserTransferData) {
-    this.selectedUserSubject.next(user);
   }
 }

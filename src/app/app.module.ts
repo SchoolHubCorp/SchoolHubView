@@ -33,6 +33,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { ResponseMessageDialogComponent } from './common/response-message-dialog/response-message-dialog.component';
 import { StudentsTeachersComponent } from './app-pages/students-teachers/students-teachers.component';
 import { AddTeacherComponent } from './app-pages/students-teachers/add-teacher/add-teacher.component';
+import { AddLessonComponent } from './app-pages/subjects/add-lesson/add-lesson.component';
 
 const appRoutes: Routes = [
   { path: '', 
@@ -92,6 +93,7 @@ const AngularMaterialsImports = [
     EditClassComponent,
     StudentsTeachersComponent,
     AddTeacherComponent,
+    AddLessonComponent,
   ],
   imports: [
     BrowserModule, 
