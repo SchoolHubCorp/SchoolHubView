@@ -27,11 +27,37 @@
                 </div>
             </div>
             <div 
-            class="lessons-list"
-            *ngFor="let lesson of lessonsList$ | async"
+                class="lesson"
+                *ngFor="let lesson of lessonsList$ | async"
             >
-                <span>Lesson topic: {{lesson.topicName}}</span>
-                <span>Lesson description: {{lesson.topicDescription}}</span>
+                <div class="lesson__text">
+                    <span class="fw-medium">Lesson topic:</span>
+                    <span>{{lesson.topicName}}</span>
+                    <span class="fw-medium mt-1">Lesson description:</span>
+                    <span>{{lesson.topicDescription}}</span>
+                    <div class="lesson-files">
+
+                    </div>
+                </div>
+                <div class="lesson__file-uploader">
+                    <div *ngIf="role === 'Teacher'; else pupil" class="mb-1">
+                        <span>Please, choose file for current lesson:</span>
+                    </div>
+                    <ng-template #pupil class="mb-1">
+                        <span>Please, add your honework:</span>
+                    </ng-template>
+                    <div class="file-input">
+                        <input type="file" (change)="onFileSelected($event)">
+                        <button mat-raised-button color="primary" (click)="onFileUpload()">Upload</button>
+                    </div>
+                    <div class="added-files">
+
+                    </div>
+                </div>
+                <div *ngIf="role === 'Teacher'" class="lesson__manage">
+                    <button mat-raised-button class="mb-2" color="warn" (click)="deleteTopic(lesson.id)">Delete</button>
+                    <button mat-raised-button color="primary" (click)="openHomeworks()">Homeworks</button>
+                </div>
             </div>
         </div>
     </ng-template>

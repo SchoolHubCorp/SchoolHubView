@@ -142,8 +142,8 @@ export class SignInUpComponent implements OnInit, OnDestroy {
         this.signInUpService.registerParent(this.registerParentPostData)
           .subscribe(
             response => {
-              this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'You have been register!');
               this.reloadPage();
+              this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'You have been register!');
             },
             (error: HttpErrorResponse) => {
               console.log(error);

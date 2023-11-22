@@ -31,9 +31,25 @@ export class PlanComponent implements OnInit, OnDestroy {
   }
 
   getUserPlan(): void {
-    if (this.userRole === 'Pupil') {
+    if (this.userRole === 'Pupil' || this.userRole === 'Parent') {
       this.subscription.add(
         this.planRequestService.getPupilPlan().subscribe((response: ArrayBuffer) => {
+          const binaryData = [];
+          const bytes = new Uint8Array(response);
+          for (let i = 0; i < bytes.byteLength; i++) {
+            binaryData.push(String.fromCharCode(bytes[i]));
+          }
+          const base64Image = window.btoa(binaryData.join(''));
+          this.plan = 'data:image/png;base64,' + base64Image;
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+        })
+      );
+    }
+    if (this.userRole === 'Teacher') {
+      this.subscription.add(
+        this.planRequestService.getTeacherPlan().subscribe((response: ArrayBuffer) => {
           const binaryData = [];
           const bytes = new Uint8Array(response);
           for (let i = 0; i < bytes.byteLength; i++) {

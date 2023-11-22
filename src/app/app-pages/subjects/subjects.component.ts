@@ -11,6 +11,7 @@ import { AddLessonComponent } from './add-lesson/add-lesson.component';
 import { SubjectsService } from './subjects.service';
 import { ShowResponseMessageService } from 'src/services/show-response-message.service';
 import { ResponseMessageType } from 'src/Interfaces/response-message';
+import { SubjectsRequestService } from 'src/services/server-requests/subjects-request.service';
 
 export enum UserRole {
   Teacher = 'Teacher',
@@ -30,6 +31,7 @@ export class SubjectsComponent implements OnInit, OnDestroy {
   selectedSubjectId!: number;
   teacherSubjectsList!: TeachersSubjects[];
   lessonsList$!: Observable<UserSubjectLessons[]>;
+  selectedFile: File | null = null;
 
   constructor(
     private tokenCheckerService: TokenCheckerService,
@@ -38,6 +40,7 @@ export class SubjectsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private subjectsService: SubjectsService,
     private showResponseMessageService: ShowResponseMessageService,
+    private subjectsRequestService: SubjectsRequestService,
   ) {}
 
   ngOnInit(): void {
@@ -66,16 +69,7 @@ export class SubjectsComponent implements OnInit, OnDestroy {
 
   selectSubject(subjectId: number): void {
     this.selectedSubjectId = subjectId;
-    this.getSubjectInfo();
-  }
-
-  getSubjectInfo(): void {
-    if (this.role === UserRole.Teacher) {
-      
-    }
-    if (this.role === UserRole.Pupil || this.role === UserRole.Parent) {
-      
-    }
+    this.getUserLessonsList();
   }
 
   addLesson(): void {
@@ -87,9 +81,15 @@ export class SubjectsComponent implements OnInit, OnDestroy {
   
     dialogRef.afterClosed().subscribe(result => {
       this.getUserSubjectsList();
-      this.getSubjectInfo();
+      this.getUserLessonsList();
     });
   }
+
+  onFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0] as File;
+  }
+
+  onFileUpload(): void {}
   
   getUserSubjectsList(): void {
     if (this.role === UserRole.Pupil || this.role === UserRole.Parent) {
@@ -127,5 +127,25 @@ export class SubjectsComponent implements OnInit, OnDestroy {
         })
       )
     }
+  }
+
+  deleteTopic(lessonid: number): void {
+    this.subscription.add(
+      this.subjectsRequestService.deleteLesson(lessonid)
+      .subscribe(response => {
+          this.getUserLessonsList();
+          console.log(response);
+          this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Lesson has been deleted successfully');
+        },
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
+        }
+      )
+    );
+  }
+
+  openHomeworks(): void {
+
   }
 }

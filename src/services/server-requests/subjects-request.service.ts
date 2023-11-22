@@ -57,4 +57,15 @@ export class SubjectsRequestService {
     
     return this.http.post<any>(`${this.url}/api/Topic`, requestBody, { headers: headers });
   }
+
+  deleteLesson(topicId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      'Accept' : '*/*',
+      'Content-Type' : 'application/json',
+      'Authorization': `Bearer ${token}`,
+    });
+    
+    return this.http.delete(`${this.url}/api/Topic/${topicId}`, { headers: headers });
+  }
 }

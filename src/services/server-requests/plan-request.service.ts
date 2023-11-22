@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { SERVICE_URL } from 'src/constants/service';
@@ -26,7 +26,7 @@ export class PlanRequestService {
     });
   }  
 
-  getTeacherPlan(teacehrId: number): Observable<ArrayBuffer> {
+  getTeacherPlan(): Observable<ArrayBuffer> {
     const token = localStorage.getItem('access_token');
   
     const headers = new HttpHeaders({
@@ -35,7 +35,7 @@ export class PlanRequestService {
       'Authorization': `Bearer ${token}`,
     });
   
-    return this.http.get(`${this.url}/api/Teacher/${teacehrId}/plan`, {
+    return this.http.get(`${this.url}/api/Teacher/plan`, {
       headers: headers,
       responseType: 'arraybuffer'
     });

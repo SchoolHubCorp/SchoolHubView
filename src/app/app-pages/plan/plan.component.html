@@ -1,5 +1,13 @@
-<div class="page-container">
+<div class="page-container" *ngIf="plan; else noPlan">
     <div class="image-container">
-    <img [src]="plan">
+        <img [src]="plan">
     </div>
 </div>
+<ng-template class="page-container" #noPlan>
+    <div class="center">
+        <img src="https://cdn-icons-png.flaticon.com/128/4076/4076503.png">
+        <div>
+            No plan selected for this user!
+        </div>
+    </div>
+</ng-template>
