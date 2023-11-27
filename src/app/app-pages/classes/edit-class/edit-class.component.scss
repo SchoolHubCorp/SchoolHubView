@@ -38,6 +38,7 @@
                     font-size: auto;
                     text-align: center;
                     margin-bottom: 15px;
+                    height: calc(100% - 20px);
                 }
                 
                 .mat-mdc-raised-button:not(:disabled) {

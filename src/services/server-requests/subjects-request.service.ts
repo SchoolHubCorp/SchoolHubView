@@ -38,7 +38,7 @@ export class SubjectsRequestService {
       'Authorization': `Bearer ${token}`,
     });
     
-    return this.http.delete(`${this.url}/api/Course/${courseId}`, { headers: headers });
+    return this.http.delete(`${this.url}/api/Course/${courseId}`, { headers: headers, responseType: 'text' });
   }
 
   addLesson(lesson: AddLessonRequest): Observable<any> {
@@ -66,6 +66,6 @@ export class SubjectsRequestService {
       'Authorization': `Bearer ${token}`,
     });
     
-    return this.http.delete(`${this.url}/api/Topic/${topicId}`, { headers: headers });
+    return this.http.delete(`${this.url}/api/Topic/${topicId}`, { headers: headers, responseType: 'text' });
   }
 }

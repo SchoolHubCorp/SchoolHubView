@@ -35,8 +35,11 @@
                     <span>{{lesson.topicName}}</span>
                     <span class="fw-medium mt-1">Lesson description:</span>
                     <span>{{lesson.topicDescription}}</span>
-                    <div class="lesson-files">
-
+                    <div *ngIf="role !== 'Teacher' && lesson.teacherFile" class="mb-1" class="lesson-files">
+                        <span>Your homework to do:</span>
+                        <a (click)="downloadFile(lesson.teacherFile, lesson.teacherFileType, lesson.topicName)">
+                            Homework {{lesson.topicName}}
+                        </a>
                     </div>
                 </div>
                 <div class="lesson__file-uploader">
@@ -44,19 +47,32 @@
                         <span>Please, choose file for current lesson:</span>
                     </div>
                     <ng-template #pupil class="mb-1">
-                        <span>Please, add your honework:</span>
+                        <span>Please, add your homework:</span>
                     </ng-template>
-                    <div class="file-input">
+                    <div class="file-input" *ngIf="role !== 'Parent'">
                         <input type="file" (change)="onFileSelected($event)">
-                        <button mat-raised-button color="primary" (click)="onFileUpload()">Upload</button>
+                        <button mat-raised-button color="primary" (click)="onFileUpload(lesson.topicId)">Upload</button>
                     </div>
                     <div class="added-files">
-
+                        <div *ngIf="role === 'Teacher' && lesson.teacherFile; else pupilFile" class="mb-1" class="lesson-files">
+                            <span>Uploaded homework file:</span>
+                            <a (click)="downloadFile(lesson.teacherFile, lesson.teacherFileType, lesson.topicName)">
+                                Homework {{lesson.topicName}}
+                            </a>
+                        </div>
+                        <ng-template #pupilFile>
+                            <div *ngIf="lesson.pupilFile && lesson.pupilFileType" class="mb-1" class="lesson-files">
+                                <span>Uploaded homework:</span>
+                                <a (click)="downloadFile(lesson.pupilFile, lesson.pupilFileType, lesson.topicName)">
+                                    My homework {{lesson.topicName}}
+                                </a>
+                            </div>
+                        </ng-template>
                     </div>
                 </div>
                 <div *ngIf="role === 'Teacher'" class="lesson__manage">
-                    <button mat-raised-button class="mb-2" color="warn" (click)="deleteTopic(lesson.id)">Delete</button>
-                    <button mat-raised-button color="primary" (click)="openHomeworks()">Homeworks</button>
+                    <button mat-raised-button class="mb-2" color="warn" (click)="deleteTopic(lesson.topicId)">Delete</button>
+                    <button mat-raised-button color="primary" (click)="openHomeworks(lesson.topicId)">Homeworks</button>
                 </div>
             </div>
         </div>

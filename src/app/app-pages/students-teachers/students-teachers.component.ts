@@ -214,8 +214,8 @@ export class StudentsTeachersComponent implements OnInit, OnDestroy {
     if (this.generatedUser.role === 'teachers') {
       this.teachersRequestService.updateTeacherInfo(updatedInfo)
         .subscribe(response => {
-          this.getUserInfo();
           this.uploadUsersList();
+          this.initUserInfo();
           this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Info updated successfully');
           console.log(response);
         },
@@ -227,14 +227,14 @@ export class StudentsTeachersComponent implements OnInit, OnDestroy {
     }
  }
 
- //Edit!!!
  deleteUser(): void {
     if (this.generatedUser.role === 'students') {
       this.subscription.add(
         this.pupilsRequestService.deletePupil(this.generatedUser.id)
           .subscribe(response => {
-            //window.location.reload();
             this.showResponseMessageService.openDialog(ResponseMessageType.Success, response);
+            this.uploadUsersList();
+            this.initUserInfo();
             console.log(response);
           },
             (error: HttpErrorResponse) => {
@@ -248,8 +248,9 @@ export class StudentsTeachersComponent implements OnInit, OnDestroy {
       this.subscription.add(
         this.teachersRequestService.deleteTeacher(this.generatedUser.id)
           .subscribe(response => {
-            this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Teacher has been deleted successfully');
-            //window.location.reload();
+            this.showResponseMessageService.openDialog(ResponseMessageType.Success, response);
+            this.uploadUsersList();
+            this.initUserInfo();
             console.log(response);
           },
             (error: HttpErrorResponse) => {

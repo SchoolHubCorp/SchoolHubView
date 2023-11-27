@@ -12,11 +12,13 @@ import { SubjectsService } from './subjects.service';
 import { ShowResponseMessageService } from 'src/services/show-response-message.service';
 import { ResponseMessageType } from 'src/Interfaces/response-message';
 import { SubjectsRequestService } from 'src/services/server-requests/subjects-request.service';
+import { ReviewHomeworkComponent } from './review-homework/review-homework.component';
 
 export enum UserRole {
   Teacher = 'Teacher',
   Parent = 'Parent',
   Pupil = 'Pupil',
+  Admin = 'Admin'
 }
 
 @Component({
@@ -89,7 +91,40 @@ export class SubjectsComponent implements OnInit, OnDestroy {
     this.selectedFile = event.target.files[0] as File;
   }
 
-  onFileUpload(): void {}
+  onFileUpload(topicId: number): void {
+    if (this.selectedFile) {
+      if (this.role === UserRole.Pupil) {
+        this.subscription.add(
+          this.pupilsRequestService.uploadPupilHomework(this.selectedFile, topicId)
+          .subscribe(response => {
+            console.log(response);
+            this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Homework has been upload successfully');
+            this.getUserLessonsList();
+          },
+          (error: HttpErrorResponse) => {
+            console.log(error);
+            this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
+          })
+        )
+      }
+      if (this.role === UserRole.Teacher) {
+        this.subscription.add(
+          this.teachersRequestService.uploadTopicFile(this.selectedFile, topicId)
+          .subscribe(response => {
+            console.log(response);
+            this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Homework has been upload successfully');
+            this.getUserLessonsList();
+          },
+          (error: HttpErrorResponse) => {
+            console.log(error);
+            this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
+          })
+        )
+      }
+    } else {
+      console.error('No file selected.');
+    }
+  }
   
   getUserSubjectsList(): void {
     if (this.role === UserRole.Pupil || this.role === UserRole.Parent) {
@@ -105,11 +140,11 @@ export class SubjectsComponent implements OnInit, OnDestroy {
       this.subscription.add(
         this.pupilsRequestService.getPupilSubjectLessons(this.selectedSubjectId)
         .subscribe(response => {
-          this.lessonsList$ = of(response.topics);
+          this.lessonsList$ = this.subjectsService.mapLessons(response.topics, UserRole.Pupil);
           console.log(response);
         },
         (error: HttpErrorResponse) => {
-          this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
+          this.lessonsList$ = of([]);
           console.log(error);
         })
       )
@@ -118,11 +153,11 @@ export class SubjectsComponent implements OnInit, OnDestroy {
       this.subscription.add(
         this.teachersRequestService.getTeacherSubjectLessons(this.selectedSubjectId)
         .subscribe(response => {
-          this.lessonsList$ = of(response.topics);
+          this.lessonsList$ = this.subjectsService.mapLessons(response.topics, UserRole.Teacher);
           console.log(response);
         },
         (error: HttpErrorResponse) => {
-          this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
+          this.lessonsList$ = of([]);
           console.log(error);
         })
       )
@@ -145,7 +180,31 @@ export class SubjectsComponent implements OnInit, OnDestroy {
     );
   }
 
-  openHomeworks(): void {
+  openHomeworks(lessonId: number | undefined): void {
+    const dialogRef = this.dialog.open(ReviewHomeworkComponent, {
+      data: {
+        lessonId: lessonId
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      this.getUserSubjectsList();
+      this.getUserLessonsList();
+    });
+  }
 
+  downloadFile(file: string, fileType: string, topicName: string): void {
+    const byteCharacters = atob(file);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: fileType });
+
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = topicName;
+    link.click();
   }
 }

@@ -1,0 +1,17 @@
+<div class="review-container">
+  <div class="homework" *ngFor="let pupilHomework of homeworks">
+    <span>{{pupilHomework.pupilName}} {{pupilHomework.pupilSurname}}</span>
+    <div class="file">
+      <a *ngIf="pupilHomework.pupilHomework" (click)="downloadFile(pupilHomework.pupilHomework, pupilHomework.pupilSurname)">
+        Homework {{pupilHomework.pupilSurname}}
+      </a>
+    </div>
+    <div class="mark-edit">
+      <input #mark matInput  type="number" value="{{pupilHomework.markName || 0}}">
+      <button mat-mini-fab color="primary" (click)="setMark(pupilHomework.homeworkId, pupilHomework.pupilId, mark.value)">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+  

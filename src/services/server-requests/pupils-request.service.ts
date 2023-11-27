@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { AllPupilsShortResponse, PupilPrivateInfo, PupilResponse, PupilSubjectLessonsResponse, PupilSubjects } from 'src/Interfaces/pupils-models';
 import { SERVICE_URL } from 'src/constants/service';
 
@@ -45,7 +45,7 @@ export class PupilsRequestService {
       'Authorization': `Bearer ${token}`,
     });
     
-    return this.http.delete(`${this.url}/api/Pupil/${pupilId}`, { headers: headers });
+    return this.http.delete(`${this.url}/api/Pupil/${pupilId}`, { headers: headers, responseType: 'text' });
   }
 
   updatePupilInfo(pupil: PupilPrivateInfo): Observable<any> {
@@ -101,7 +101,27 @@ export class PupilsRequestService {
       'Content-Type' : 'application/json',
       'Authorization': `Bearer ${token}`,
     });
-    
-    return this.http.get<PupilSubjectLessonsResponse>(`${this.url}/api/Pupil/${courseId}/Topics`, { headers: headers });
+
+    return this.http.get<PupilSubjectLessonsResponse>(`${this.url}/api/Pupil/${courseId}/Topics`, { headers });
+  }
+
+  uploadPupilHomework(file: File, topicId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+  
+    const headers = new HttpHeaders({
+      'Accept' : '*/*',
+      'Authorization': `Bearer ${token}`,
+    });
+  
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+  
+    return this.http.post(`${this.url}/api/Homework/${topicId}/submit-homework`, formData, {
+      headers: headers,
+      observe: 'response',
+      responseType: 'text'
+    }).pipe(
+      map(response => response.body)
+    );
   }
 }

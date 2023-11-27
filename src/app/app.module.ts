@@ -34,6 +34,8 @@ import { ResponseMessageDialogComponent } from './common/response-message-dialog
 import { StudentsTeachersComponent } from './app-pages/students-teachers/students-teachers.component';
 import { AddTeacherComponent } from './app-pages/students-teachers/add-teacher/add-teacher.component';
 import { AddLessonComponent } from './app-pages/subjects/add-lesson/add-lesson.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { ReviewHomeworkComponent } from './app-pages/subjects/review-homework/review-homework.component';
 
 const appRoutes: Routes = [
   { path: '', 
@@ -72,7 +74,8 @@ const AngularMaterialsImports = [
   MatButtonModule,
   MatIconModule,
   MatTableModule,
-  MatDialogModule
+  MatDialogModule,
+  MatSnackBarModule
 ]
 
 @NgModule({
@@ -94,6 +97,7 @@ const AngularMaterialsImports = [
     StudentsTeachersComponent,
     AddTeacherComponent,
     AddLessonComponent,
+    ReviewHomeworkComponent
   ],
   imports: [
     BrowserModule, 

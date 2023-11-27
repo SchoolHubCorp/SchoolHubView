@@ -106,8 +106,6 @@
                 float: left;
                 width: 40%;
                 height: 100%;
-
-                .lesson-files {}
             }
 
             &__file-uploader {
@@ -145,6 +143,24 @@
                     padding-right: 5px;
                 }
             }
+        }
+    }
+}
+
+.lesson-files {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 10px;
+
+    a {
+        color: #0c66a7;
+        width: fit-content;
+        padding: 5px;
+        border-radius: 10px;
+
+        &:hover {
+            background-color: #d0d7de;
         }
     }
 }

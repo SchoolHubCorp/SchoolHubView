@@ -32,7 +32,9 @@ export interface TeacherSubjectLessonsResponse {
 }
 
 export interface TeacherSubjectLessons {
-    id: number;
+    topicId: number;
     topicName: string;
     topicDescription: string;
+    teacherFile: string;
+    teacherFileType: string;
 }

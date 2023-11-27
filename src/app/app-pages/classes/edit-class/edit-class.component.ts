@@ -11,6 +11,7 @@ import { TeachersRequestService } from 'src/services/server-requests/teachers-re
 import { AllTeachersShortResponse } from 'src/Interfaces/teachers-models';
 import { AddSubject, AddSubjectRequest } from 'src/Interfaces/subjects-models';
 import { SubjectsRequestService } from 'src/services/server-requests/subjects-request.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-class',
@@ -49,6 +50,7 @@ export class EditClassComponent implements OnInit, OnDestroy {
     private planRequestService: PlanRequestService,
     private showResponseMessageService: ShowResponseMessageService,
     private fb: FormBuilder,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -118,7 +120,9 @@ export class EditClassComponent implements OnInit, OnDestroy {
     }
   }
 
-  showPupil() {}
+  showPupil(): void {
+    this.router.navigate(['/schoolhub/students']);
+  }
 
   editClassname(): void {
     if (this.editClassFormController.valid && this.editClassFormController.value) {

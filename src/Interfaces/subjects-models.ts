@@ -29,7 +29,12 @@ export interface UserSubjectsResponse {
 }
 
 export interface UserSubjectLessons {
-    id: number;
+    topicId: number;
     topicName: string;
     topicDescription: string;
+    teacherFile: string;
+    teacherFileType: string;
+    homeworkId?: number;
+    pupilFile?: string;
+    pupilFileType?: string;
 }

@@ -65,7 +65,16 @@ export interface PupilSubjectLessonsResponse {
 }
 
 export interface PupilSubjectLessons {
-    id: number;
+    topicId: number;
     topicName: string;
     topicDescription: string;
+    teacherFile: string;
+    teacherFileType: string;
+    homeworks: PupilHomework[];
+}
+
+export interface PupilHomework {
+    homeworkId: number | null;
+    pupilFile: string;
+    pupilFileType: string;
 }

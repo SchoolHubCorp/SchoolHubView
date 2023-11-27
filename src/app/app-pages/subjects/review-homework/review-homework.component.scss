@@ -1,0 +1,44 @@
+.review-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: 800px;
+    max-height: 500px;
+
+    .homework {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        margin: 10px 5px;
+        column-gap: 10%;
+
+        span {
+            width: 30%;
+        }
+
+        .file {
+            width: 30%;
+
+            a{
+                color: #0c66a7;
+                width: 100%;
+                height: 100%;
+                padding: 5px;
+                border-radius: 10px;
+
+                &:hover {
+                    background-color: #d0d7de;
+                }
+            }
+        }
+
+        .mark-edit {
+            display: flex;
+            flex-direction: row;
+            width: 40%;
+            column-gap: 5px;
+        }
+    }
+}

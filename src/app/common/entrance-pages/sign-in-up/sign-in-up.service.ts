@@ -27,11 +27,6 @@ export class SignInUpService {
   }
 
   sentVerifyCode(email: string): Observable<any> {
-    const requestData = email;
-  
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  
-    return this.http.post(`${this.url}/api/Users/ForgotPassword`, requestData, { headers });
+    return this.http.post(`${this.url}/api/Users/ForgotPassword`, `"${email}"`, { headers: { 'Content-Type': 'application/json' } });
   }
-  
 }

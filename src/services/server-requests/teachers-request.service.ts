@@ -55,7 +55,7 @@ export class TeachersRequestService {
     return this.http.put(`${this.url}/api/Teacher/${teacher.id}`, requestBody, { headers: headers });
   }
 
-  deleteTeacher(teacherId: number): Observable<string> {
+  deleteTeacher(teacherId: number): Observable<any> {
     const token = localStorage.getItem('access_token');
     const headers = new HttpHeaders({
       'Accept' : '*/*',
@@ -63,7 +63,7 @@ export class TeachersRequestService {
       'Authorization': `Bearer ${token}`,
     });
     
-    return this.http.delete<string>(`${this.url}/api/Teacher/${teacherId}`, { headers: headers });
+    return this.http.delete(`${this.url}/api/Teacher/${teacherId}`, { headers: headers, responseType: 'text' });
   }
 
   setTeacherPlan(file: File, teacehrId: number): Observable<any> {
@@ -121,5 +121,25 @@ export class TeachersRequestService {
     });
     
     return this.http.get<TeacherSubjectLessonsResponse>(`${this.url}/api/Teacher/${courseId}/Topics`, { headers: headers });
+  }
+
+  uploadTopicFile(file: File, topicId : number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+  
+    const headers = new HttpHeaders({
+      'Accept' : '*/*',
+      'Authorization': `Bearer ${token}`,
+    });
+  
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+  
+    return this.http.post(`${this.url}/api/Topic/${topicId}/plan`, formData, {
+      headers: headers,
+      observe: 'response',
+      responseType: 'text'
+    }).pipe(
+      map(response => response.body)
+    );
   }
 }
