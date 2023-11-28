@@ -164,3 +164,11 @@
         }
     }
 }
+
+.file {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    column-gap: 10px;
+}

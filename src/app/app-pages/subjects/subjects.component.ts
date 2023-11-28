@@ -13,6 +13,7 @@ import { ShowResponseMessageService } from 'src/services/show-response-message.s
 import { ResponseMessageType } from 'src/Interfaces/response-message';
 import { SubjectsRequestService } from 'src/services/server-requests/subjects-request.service';
 import { ReviewHomeworkComponent } from './review-homework/review-homework.component';
+import { HomeworkRequestService } from 'src/services/server-requests/homework-request.service';
 
 export enum UserRole {
   Teacher = 'Teacher',
@@ -43,6 +44,7 @@ export class SubjectsComponent implements OnInit, OnDestroy {
     private subjectsService: SubjectsService,
     private showResponseMessageService: ShowResponseMessageService,
     private subjectsRequestService: SubjectsRequestService,
+    private homeworkRequestService: HomeworkRequestService,
   ) {}
 
   ngOnInit(): void {
@@ -206,5 +208,36 @@ export class SubjectsComponent implements OnInit, OnDestroy {
     link.href = window.URL.createObjectURL(blob);
     link.download = topicName;
     link.click();
+  }
+
+  deleteFile(topicId: number, homeworkId?: number): void {
+    if (this.role === UserRole.Pupil && homeworkId) {
+      this.subscription.add(
+        this.homeworkRequestService.deletePupilHomework(homeworkId)
+        .subscribe(response => {
+          this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Uploaded file deleted successfully');
+          this.getUserLessonsList();
+          console.log(response);
+        },
+        (error: HttpErrorResponse) => {
+          this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
+          console.log(error);
+        })
+      )
+    }
+    if (this.role === UserRole.Teacher) {
+      this.subscription.add(
+        this.homeworkRequestService.deleteTeacherHomework(topicId)
+        .subscribe(response => {
+          this.showResponseMessageService.openDialog(ResponseMessageType.Success, 'Uploaded file deleted successfully');
+          this.getUserLessonsList();
+          console.log(response);
+        },
+        (error: HttpErrorResponse) => {
+          this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
+          console.log(error);
+        })
+      )
+    }
   }
 }

@@ -39,4 +39,26 @@ export class HomeworkRequestService {
   
     return this.http.post<ClassResponse>(`${this.url}/api/Mark/${homeworkId}/placeMark?pupilId=${pupilId}`, requestBody, { headers: headers });
   }
+
+  deletePupilHomework(homeworkId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      'Accept' : '*/*',
+      'Content-Type' : 'application/json',
+      'Authorization': `Bearer ${token}`,
+    });
+
+    return this.http.delete(`${this.url}/api/Homework/${homeworkId}/deletePomework`, { headers: headers, responseType: 'text' });
+  }
+
+  deleteTeacherHomework(topicId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      'Accept' : '*/*',
+      'Content-Type' : 'application/json',
+      'Authorization': `Bearer ${token}`,
+    });
+
+    return this.http.delete(`${this.url}/api/Topic/${topicId}/file`, { headers: headers, responseType: 'text' });
+  }
 }

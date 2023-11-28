@@ -56,16 +56,26 @@
                     <div class="added-files">
                         <div *ngIf="role === 'Teacher' && lesson.teacherFile; else pupilFile" class="mb-1" class="lesson-files">
                             <span>Uploaded homework file:</span>
-                            <a (click)="downloadFile(lesson.teacherFile, lesson.teacherFileType, lesson.topicName)">
-                                Homework {{lesson.topicName}}
-                            </a>
+                            <div class="file">
+                                <a (click)="downloadFile(lesson.teacherFile, lesson.teacherFileType, lesson.topicName)">
+                                    Homework {{lesson.topicName}}
+                                </a>
+                                <button mat-mini-fab color="primary" (click)="deleteFile(lesson.topicId, lesson.homeworkId)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
                         </div>
                         <ng-template #pupilFile>
                             <div *ngIf="lesson.pupilFile && lesson.pupilFileType" class="mb-1" class="lesson-files">
                                 <span>Uploaded homework:</span>
-                                <a (click)="downloadFile(lesson.pupilFile, lesson.pupilFileType, lesson.topicName)">
-                                    My homework {{lesson.topicName}}
-                                </a>
+                                <div class="file">
+                                    <a (click)="downloadFile(lesson.pupilFile, lesson.pupilFileType, lesson.topicName)">
+                                        My homework {{lesson.topicName}}
+                                    </a>
+                                    <button  *ngIf="role !== 'Parent'" mat-mini-fab color="primary" (click)="deleteFile(lesson.topicId, lesson.homeworkId)">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
                             </div>
                         </ng-template>
                     </div>
