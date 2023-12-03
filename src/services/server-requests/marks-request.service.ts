@@ -24,7 +24,7 @@ export class MarksRequestService {
     return this.http.get<PupilGradeTable[]>(`${this.url}/api/Mark/${courseId}/studentMarksTeacher`, { headers: headers });
   }
 
-  getMarksForPupil(pupilId: number): Observable<CourseGradeTable[]> {
+  getMarksForPupil(): Observable<CourseGradeTable[]> {
     const token = localStorage.getItem('access_token');
 
     const headers = new HttpHeaders({
@@ -33,7 +33,7 @@ export class MarksRequestService {
       'Authorization': `Bearer ${token}`,
     });
     
-    return this.http.get<CourseGradeTable[]>(`${this.url}/api/Mark/${pupilId}/studentMarksPupil`, { headers: headers });
+    return this.http.get<CourseGradeTable[]>(`${this.url}/api/Mark/studentMarksPupil`, { headers: headers });
   }
 
   getMarksForAdmin(pupilId: number): Observable<CourseGradeTable[]> {

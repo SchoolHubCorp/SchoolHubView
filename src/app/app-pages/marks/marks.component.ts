@@ -155,7 +155,7 @@ export class MarksComponent implements OnInit, OnDestroy {
   getPupilMarks(): void {
     if (this.userRole === UserRole.Pupil) {
       this.subscription.add(
-        this.marksRequestService.getMarksForPupil(5)
+        this.marksRequestService.getMarksForPupil()
           .subscribe(response => {
             this.markTable = response.map(pupilGrade => {
               return {

@@ -47,3 +47,9 @@ export interface RegisterTeacher {
     password: string,
     pesel: string,
 }
+
+export interface UpdatedPasswordInfo {
+    email: string;
+    accessCode: string;
+    password: string;
+}

@@ -6,6 +6,7 @@ import { SignInUpService } from '../sign-in-up/sign-in-up.service';
 import { ShowResponseMessageService } from 'src/services/show-response-message.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ResponseMessageType } from 'src/Interfaces/response-message';
+import { UpdatedPasswordInfo } from 'src/Interfaces/login-models';
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,6 +15,8 @@ import { ResponseMessageType } from 'src/Interfaces/response-message';
 })
 export class ForgotPasswordComponent implements OnInit, OnDestroy {
   renewForm: FormGroup = new FormGroup({});
+  updatedPassword: FormGroup = new FormGroup({});
+  codeSubmited!: boolean;
   private subscription: Subscription = new Subscription;
 
   constructor(
@@ -27,17 +30,36 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     this.renewForm = this.fb.group({
       email: ['', [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
     });
+    this.updatedPassword = this.fb.group({
+      email: ['', [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+      accessCode: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.pattern('^[^\s]{6,}$')]],
+    });
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
-  onSubmit(email: string) {
+  onSubmit(email: string): void {
     this.subscription.add(
       this.signInUpService.sentVerifyCode(email)
       .subscribe(response => {
-        this.router.navigate(['/']);
+        this.codeSubmited = true;
+        console.log(response);
+      },
+      (error: HttpErrorResponse) => {
+        this.showResponseMessageService.openDialog(ResponseMessageType.Error, error.error);
+        console.log(error);
+      })
+    )
+  }
+
+  sendNewPassword(info: UpdatedPasswordInfo): void {
+    this.subscription.add(
+      this.signInUpService.resetPassword(info)
+      .subscribe(response => {
+        this.router.navigate(['/schoolhub']);
         console.log(response);
       },
       (error: HttpErrorResponse) => {

@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { EntranceResponse, LoginPostData, RegisterPostData } from 'src/Interfaces/login-models';
+import { EntranceResponse, LoginPostData, RegisterPostData, UpdatedPasswordInfo } from 'src/Interfaces/login-models';
 import { SERVICE_URL } from 'src/constants/service';
 
 @Injectable({
@@ -27,6 +27,24 @@ export class SignInUpService {
   }
 
   sentVerifyCode(email: string): Observable<any> {
-    return this.http.post(`${this.url}/api/Users/ForgotPassword`, `"${email}"`, { headers: { 'Content-Type': 'application/json' } });
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      'Accept' : '*/*',
+      'Content-Type' : 'application/json',
+      'Authorization': `Bearer ${token}`,
+    });
+
+    return this.http.post(`${this.url}/api/Users/ForgotPassword`, email, { headers: headers, responseType: 'text' });
+  }
+
+  resetPassword(info: UpdatedPasswordInfo): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders({
+      'Accept' : '*/*',
+      'Content-Type' : 'application/json',
+      'Authorization': `Bearer ${token}`,
+    });
+
+    return this.http.post(`${this.url}/api/Users/ResetPassword`, info, { headers: headers, responseType: 'text' });
   }
 }
