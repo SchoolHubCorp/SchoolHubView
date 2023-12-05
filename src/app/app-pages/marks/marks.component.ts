@@ -153,7 +153,7 @@ export class MarksComponent implements OnInit, OnDestroy {
   }
 
   getPupilMarks(): void {
-    if (this.userRole === UserRole.Pupil) {
+    if (this.userRole === UserRole.Pupil || this.userRole === UserRole.Parent) {
       this.subscription.add(
         this.marksRequestService.getMarksForPupil()
           .subscribe(response => {
